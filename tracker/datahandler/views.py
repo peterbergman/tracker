@@ -1,8 +1,10 @@
 from django.http import HttpResponse
-from datahandler.models import Event
+#from datahandler.models import Event
+from django.conf import settings
 import datetime
 import time
 import uuid
+import bson
 
 def delegate_request(request, account_id, site_id):
     """Delegate a request by calling the correct handler."""
@@ -19,7 +21,18 @@ def handle_get(request, account_id, site_id):
     visitor_id = parse_visitor_id(request)
     page_url = parse_page_url(request)
     user_agent = parse_user_agent(request)
-    event = Event(account_id=account_id, site_id=site_id, visitor_id=visitor_id, page_url=page_url, user_agent=user_agent).save()
+    #event = Event(account_id=account_id, site_id=site_id, visitor_id=visitor_id, page_url=page_url, user_agent=user_agent)
+    event = {
+        '_id' : bson.ObjectId(),
+        'time' : datetime.datetime.now(),
+        'visitor_id' : visitor_id,
+        'account_id' : account_id,
+        'site_id' : site_id,
+        'page_url' : page_url,
+        'user_agent' : user_agent
+    }
+    settings.DB.event.insert(event, w=0)
+
     return create_response(visitor_id)
 
 def handle_unsupported_method(request):
