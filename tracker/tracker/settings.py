@@ -8,7 +8,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.7/ref/settings/
 """
 
-from mongoengine import *
+#from mongoengine import *
+import pymongo
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
@@ -66,13 +67,17 @@ DATABASES = {
     },
 }
 
-_MONGODB_HOST = '54.172.75.176'
-_MONGODB_NAME = 'tracker'
-_MONGODB_DATABASE_HOST = \
-    'mongodb://%s/%s' \
-    % (_MONGODB_HOST, _MONGODB_NAME)
+#_MONGODB_HOST = '54.172.75.176'
+#_MONGODB_NAME = 'tracker'
+#_MONGODB_DATABASE_HOST = \
+#    'mongodb://%s/%s' \
+#    % (_MONGODB_HOST, _MONGODB_NAME)
 
-connect(_MONGODB_NAME, host=_MONGODB_DATABASE_HOST)
+#print('connecting to db!')
+#connect(_MONGODB_NAME, host=_MONGODB_DATABASE_HOST)
+
+CONN = pymongo.MongoClient('54.172.75.176')
+DB = CONN.tracker
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
