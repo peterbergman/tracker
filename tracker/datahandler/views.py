@@ -1,5 +1,7 @@
 from django.http import HttpResponse
 from datahandler.models import Event
+import datetime
+import time
 import uuid
 
 def delegate_request(request, account_id, site_id):
@@ -13,9 +15,7 @@ def handle_get(request, account_id, site_id):
     page_url = parse_page_url(request)
     user_agent = parse_user_agent(request)
     event = Event(account_id=account_id, site_id=site_id, visitor_id=visitor_id, page_url=page_url, user_agent=user_agent).save()
-    print(event)
-
-    return HttpResponse(status=200)
+    return create_response(visitor_id)
 
 def handle_unsupported_method(request):
     return HttpResponse(status=400)
@@ -37,3 +37,9 @@ def parse_user_agent(request):
     if user_agent == None:
         user_agent = 'None'
     return user_agent
+
+def create_response(visitor_id):
+    response = HttpResponse()
+    expire_time = datetime.datetime.fromtimestamp(time.time() + 157784630)
+    response.set_cookie('visitor_id', value=visitor_id, expires=expire_time)
+    return response
