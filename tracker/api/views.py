@@ -158,7 +158,7 @@ def browsers(request, account_id, site_id, start_date, end_date):
         },
         'dates':
         {
-          '$addToSet': '$date' # for each group, create an array of dates where the combination of user_agent/visitor_id has been seen (multiple hits during one day are represented with multiple entries in the array)
+          '$push': '$date' # for each group, create an array of dates where the combination of user_agent/visitor_id has been seen (multiple hits during one day are represented with multiple entries in the array)
         }
       }
     },
@@ -195,7 +195,7 @@ def browsers(request, account_id, site_id, start_date, end_date):
     ])
 
     response = {'account_id' : account_id, 'sites' : [{'site_id' : site_id, 'site_name' : 'None', 'dates' : []}]}
-    #for date in result['result']:
-        #response['sites'][0]['dates'].append({date['_id'] : {'browsers' : {'total' : date['total'], 'browsers' : date['browsers']}}})
+    for date in result['result']:
+        response['sites'][0]['dates'].append({date['_id'] : {'browsers' : {'total' : date['total'], 'browsers' : date['browsers']}}})
 
-    return HttpResponse(dumps(result), content_type='application/json')
+    return HttpResponse(dumps(response), content_type='application/json')
