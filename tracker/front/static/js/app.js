@@ -28,6 +28,48 @@ $(function(){
         App.loadBrowsers();
       }
     },
+    getApiUrl: function(protocol, host, port, accountId, siteId, startDate, endDate, report) {
+      return protocol + '://' + host + ':' + port + '/api/accounts/' + accountId + '/sites/' + siteId + '/start_date/' + startDate + '/end_date/' + endDate + '/' + report;
+    },
+    sortUrlArray: function(urlArray) {
+      urlArray.sort(function(a, b) {
+        return b.hits - a.hits;
+      });
+      return urlArray;
+    },
+    aggregatePageViewsPerUrl: function(data) {
+      var urls = {};
+      for (var dateIndex in data.sites[0].dates) {
+        var date = data.sites[0].dates[dateIndex];
+        for (var pageIndex in date.data.page_views.pages) {
+          var url = date.data.page_views.pages[pageIndex].page_url;
+          var pageViews = date.data.page_views.pages[pageIndex].page_views;
+          var aggregatedPageViews = urls[url];
+          if (typeof aggregatedPageViews == 'undefined') {
+            urls[url] = pageViews;
+          } else {
+            urls[url] += pageViews;
+          }
+        }
+      }
+      return urls;
+    },
+    populateUrlPageViewTable: function(data) {
+      var urls = App.aggregatePageViewsPerUrl(data);
+      var urlArray = [];
+      for (var url in urls) {
+        urlArray.push({'url': url, 'hits': urls[url]});
+      }
+      App.sortUrlArray(urlArray);
+      var urlHitsTable = '<table class="table table-striped"><thead><tr><th>URL</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th class="right_text">Hits</th></tr></thead><tbody>';
+      for (var index in urlArray) {
+        urlHitsTable += '<tr>' + '<td>' + urlArray[index].url + '</td>';
+        urlHitsTable += '<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>';
+        urlHitsTable += '<td class="right_text">' + urlArray[index].hits + '</td></tr>'
+      }
+      urlHitsTable += '</tbody></table>';
+      $('.table-responsive').html(urlHitsTable)
+    },
     loadPageViews: function() {
       console.log('loading page views...');
       $.ajax({
@@ -38,30 +80,8 @@ $(function(){
                 App.constants.debug.startDate,
                 App.constants.debug.endDate,
                 App.constants.reports.pageViews),
-
       }).done(function(data, textStatus, jqXHR) {
-        var urls = {};
-        for (var dateIndex in data.sites[0].dates) {
-          var date = data.sites[0].dates[dateIndex];
-          for (var pageIndex in date.data.page_views.pages) {
-            var url = date.data.page_views.pages[pageIndex].page_url;
-            var pageViews = date.data.page_views.pages[pageIndex].page_views;
-            var aggregatedPageViews = urls[url];
-            if (typeof aggregatedPageViews == 'undefined') {
-              urls[url] = pageViews;
-            } else {
-              urls[url] += pageViews;
-            }
-          }
-        }
-        var urlHitsTable = '<table class="table table-striped"><thead><tr><th>URL</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th class="right_text">Hits</th></tr></thead><tbody>';
-        for (url in urls) {
-          urlHitsTable += '<tr>' + '<td>' + url + '</td>';
-          urlHitsTable += '<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>';
-          urlHitsTable += '<td class="right_text">' + urls[url] + '</td></tr>'
-        }
-        urlHitsTable += '</tbody></table>';
-        $('.table-responsive').html(urlHitsTable)
+        App.populateUrlPageViewTable(data);
       })
     },
     loadVisitors: function() {
@@ -69,9 +89,6 @@ $(function(){
     },
     loadBrowsers: function() {
       console.log('loading browsers..');
-    },
-    getApiUrl: function(protocol, host, port, accountId, siteId, startDate, endDate, report) {
-      return protocol + '://' + host + ':' + port + '/api/accounts/' + accountId + '/sites/' + siteId + '/start_date/' + startDate + '/end_date/' + endDate + '/' + report;
     }
   }
   App.init();
