@@ -8,8 +8,6 @@ import json
 
 def get_account(request, account_id):
     response = HttpResponse(content_type='application/json')
-    #content = Account.objects(account_id = account_id)
-    #response.content = content.to_json()
     response.content = dumps(settings.DB.account.find({'account_id' : account_id}, {'password': False, '_id': False}))
     return response
 
