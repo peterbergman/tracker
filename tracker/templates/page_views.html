@@ -58,22 +58,7 @@
           </p>
           <h1 class="page-header">Page views</h1>
           <div class="row placeholders">
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <h4>Label</h4>
-              <span class="text-muted">Something else</span>
-            </div>
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <h4>Label</h4>
-              <span class="text-muted">Something else</span>
-            </div>
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <h4>Label</h4>
-              <span class="text-muted">Something else</span>
-            </div>
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <h4>Label</h4>
-              <span class="text-muted">Something else</span>
-            </div>
+            <canvas id="chart" width="1024" height="400"></canvas>
           </div>
 
           <h2 class="sub-header">Pages</h2>
@@ -89,6 +74,7 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src={% static "bootstrap/js/bootstrap.min.js" %}></script>
-    <script src={% static "js/app.js" %}></script>
+    <script src={% static "js/Chart.min.js" %}></script>
+    <script src={% static "js/App.js" %}></script>
   </body>
 </html>
