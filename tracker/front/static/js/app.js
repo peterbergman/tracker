@@ -65,11 +65,11 @@ $(function(){
         urlArray.push({'url': url, 'hits': urls[url]});
       }
       App.sortUrlArray(urlArray);
-      var urlHitsTable = '<table class="table table-striped"><thead><tr><th>URL</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th class="right_text">Hits</th></tr></thead><tbody>';
+      var urlHitsTable = '<table class="table table-striped"><thead><tr><th>URL</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th class="right-text">Hits</th></tr></thead><tbody>';
       for (var index in urlArray) {
         urlHitsTable += '<tr>' + '<td>' + urlArray[index].url + '</td>';
         urlHitsTable += '<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>';
-        urlHitsTable += '<td class="right_text">' + urlArray[index].hits + '</td></tr>'
+        urlHitsTable += '<td class="right-text">' + urlArray[index].hits + '</td></tr>'
       }
       urlHitsTable += '</tbody></table>';
       $('.table-responsive').html(urlHitsTable)
