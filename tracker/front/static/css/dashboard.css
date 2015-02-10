@@ -63,7 +63,7 @@ body {
 .nav-sidebar > .active > a:hover,
 .nav-sidebar > .active > a:focus {
   color: #fff;
-  background-color: #428bca;
+  background-color: #368DBA;
 }
 
 
@@ -104,6 +104,14 @@ body {
   border-radius: 50%;
 }
 
-.right_text {
-   text-align: right;   
+.right-text {
+   text-align: right;
+}
+
+.logo-img {
+  width: 45px;
+}
+
+.account-dropdown-button {
+  padding: 10px;
 }
