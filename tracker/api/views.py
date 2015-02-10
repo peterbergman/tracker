@@ -152,68 +152,68 @@ def visitors(request, account_id, site_id, start_date, end_date):
 
 def browsers(request, account_id, site_id, start_date, end_date):
     result = settings.DB.command('aggregate', 'event', pipeline=[
-    {
-      '$match': # only match dates within the given interval
       {
-        'time':
+        '$match': # only match dates within the given interval
         {
-          '$gte': datetime.strptime(start_date, '%Y-%m-%d'),
-          '$lt':  datetime.strptime(end_date, '%Y-%m-%d')
+          'time':
+          {
+            '$gte': datetime.strptime(start_date, '%Y-%m-%d'),
+            '$lt':  datetime.strptime(end_date, '%Y-%m-%d')
+          }
+        }
+      },
+      {
+        '$project':
+        {
+          'user_agent': 1,
+          'visitor_id': 1,
+          'date': {'$substr': ["$time", 0, 10] }
+        }
+      },
+      {
+        '$group': # first create a grouping on user_agent AND visitor_id
+        {
+          '_id':
+          {
+            'user_agent':'$user_agent',
+            'visitor_id' : '$visitor_id'
+          },
+          'dates':
+          {
+            '$push': '$date' # for each group, create an array of dates where the combination of user_agent/visitor_id has been seen (multiple hits during one day are represented with multiple entries in the array)
+          }
+        }
+      },
+      {
+        '$unwind': '$dates' # unwind the date array so that it can be used to group on in the next step
+      },
+      {
+        '$group': # group on dates
+        {
+          '_id': '$dates',
+          'browsers':
+          {
+            '$addToSet': '$_id.user_agent' # for each date, make a set of user_agent values
+          }
+        }
+      },
+      {
+        '$unwind' : '$browsers' # unwind the set of user_agent values so that it can be used in the next step to make a count of the number of different user_agent values per date
+      },
+      {
+        '$group': # group on date again
+        {
+          '_id': '$_id',
+          'browsers':
+          {
+            '$addToSet' : '$browsers' # add each user_agent to a set
+          },
+          'total':
+          {
+            '$sum': 1 # make a sum for all user_agent values per date which will be the count of unique user_agent for each date
+          }
         }
       }
-    },
-    {
-    '$project':
-    {
-    'user_agent': 1,
-    'visitor_id': 1,
-    'date': {'$substr': ["$time", 0, 10] }
-    }
-    },
-    {
-      '$group': # first create a grouping on user_agent AND visitor_id
-      {
-        '_id':
-        {
-          'user_agent':'$user_agent',
-          'visitor_id' : '$visitor_id'
-        },
-        'dates':
-        {
-          '$push': '$date' # for each group, create an array of dates where the combination of user_agent/visitor_id has been seen (multiple hits during one day are represented with multiple entries in the array)
-        }
-      }
-    },
-    {
-    '$unwind': '$dates' # unwind the date array so that it can be used to group on in the next step
-    },
-    {
-    '$group': # group on dates
-    {
-    '_id': '$dates',
-    'browsers':
-    {
-    '$addToSet': '$_id.user_agent' # for each date, make a set of user_agent values
-    }
-    }
-    },
-    {
-    '$unwind' : '$browsers' # unwind the set of user_agent values so that it can be used in the next step to make a count of the number of different user_agent values per date
-    },
-    {
-    '$group': # group on date again
-    {
-    '_id': '$_id',
-    'browsers':
-    {
-    '$addToSet' : '$browsers' # add each user_agent to a set
-    },
-    'total':
-    {
-    '$sum': 1 # make a sum for all user_agent values per date which will be the count of unique user_agent for each date
-    }
-    }
-    }
     ])
 
     response = {'account_id' : account_id, 'sites' : [{'site_id' : site_id, 'site_name' : 'None', 'dates' : []}]}
