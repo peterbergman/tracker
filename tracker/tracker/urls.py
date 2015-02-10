@@ -10,4 +10,7 @@ urlpatterns = patterns('',
     url(r'^api/accounts/([^/]+)/sites/([^/]+)/start_date/([^/]+)/end_date/([^/]+)/visitors$', 'api.views.visitors'),
     url(r'^api/accounts/([^/]+)/sites/([^/]+)/start_date/([^/]+)/end_date/([^/]+)/browsers$', 'api.views.browsers'),
 
+    url(r'^page_views/$', 'front.views.page_views'),
+    url(r'^visitors/$', 'front.views.visitors'),
+    url(r'^browsers/$', 'front.views.browsers'),
 )
