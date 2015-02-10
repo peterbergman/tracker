@@ -8,6 +8,3 @@ class Event():
         self.site_id = site_id
         self.page_url = page_url
         self.user_agent = user_agent
-
-    def __unicode__(self):
-        return str(self.time) + ', ' + self.visitor_id + ', ' + self.account_id + ', ' + self.site_id + ', ' + self.page_url + ', ' + self.user_agent
