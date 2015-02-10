@@ -75,3 +75,55 @@ def page_views(request, account_id, site_id, start_date, end_date):
         response['sites'][0]['dates'].append({date['_id'] : {'page_views' : {'total' : date['total'], 'pages' : date['pages']}}})
 
     return HttpResponse(dumps(response), content_type='application/json')
+
+def visitors(request, account_id, site_id, start_date, end_date):
+    result = settings.DB.command('aggregate', 'event', pipeline=[
+      {
+        '$match': # only match dates within the given interval
+        {
+          'time':
+          {
+            '$gte': datetime.strptime(start_date, '%Y-%m-%d'),
+            '$lt':  datetime.strptime(end_date, '%Y-%m-%d')
+          }
+        }
+      },
+      {
+        '$project':
+        {
+          'visitor_id': 1,
+          'date': {'$substr': ["$time", 0, 10] }
+        }
+      },
+      {
+        '$group':
+        {
+          '_id': '$date',
+          'visitors':
+          {
+            '$addToSet':
+            {
+              'visitor_id': '$visitor_id'
+            }
+          }
+        }
+      },
+      {
+        '$unwind': '$visitors'
+      },
+      {
+        '$group':
+        {
+          '_id': '$_id',
+          'visitors':
+          {
+            '$sum': 1
+          }
+        }
+      }
+    ])
+
+    response = {'account_id' : account_id, 'sites' : [{'site_id' : site_id, 'site_name' : 'None', 'dates' : []}]}
+    for date in result['result']:
+        response['sites'][0]['dates'].append({date['_id'] : {'visitors' : date['visitors']}})
+    return HttpResponse(dumps(response), content_type='application/json')
