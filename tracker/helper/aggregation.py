@@ -59,7 +59,7 @@ def page_views(account_id, site_id, start_date, end_date):
 
     result = {'account_id' : account_id, 'sites' : [{'site_id' : site_id, 'site_name' : 'None', 'dates' : []}]}
     for date in aggregated_data['result']:
-        result['sites'][0]['dates'].append({date['_id'] : {'page_views' : {'total' : date['total'], 'pages' : date['pages']}}})
+        result['sites'][0]['dates'].append({'date': date['_id'], 'data' : {'page_views' : {'total' : date['total'], 'pages' : date['pages']}}})
     return result
 
 def visitors(account_id, site_id, start_date, end_date):
@@ -111,7 +111,7 @@ def visitors(account_id, site_id, start_date, end_date):
 
     result = {'account_id' : account_id, 'sites' : [{'site_id' : site_id, 'site_name' : 'None', 'dates' : []}]}
     for date in aggregated_data['result']:
-        result['sites'][0]['dates'].append({date['_id'] : {'visitors' : date['visitors']}})
+        result['sites'][0]['dates'].append({'date': date['_id'], 'data' : {'visitors' : date['visitors']}})
     return result
 
 def browsers(account_id, site_id, start_date, end_date):
@@ -182,5 +182,5 @@ def browsers(account_id, site_id, start_date, end_date):
 
     result = {'account_id' : account_id, 'sites' : [{'site_id' : site_id, 'site_name' : 'None', 'dates' : []}]}
     for date in aggregated_data['result']:
-        result['sites'][0]['dates'].append({date['_id'] : {'browsers' : {'total' : date['total'], 'browsers' : date['browsers']}}})
+        result['sites'][0]['dates'].append({'date': date['_id'], 'data' : {'browsers' : {'total' : date['total'], 'browsers' : date['browsers']}}})
     return result
