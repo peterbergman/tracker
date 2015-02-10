@@ -76,8 +76,8 @@ DATABASES = {
 #print('connecting to db!')
 #connect(_MONGODB_NAME, host=_MONGODB_DATABASE_HOST)
 
-CONN = pymongo.MongoClient('54.172.75.176')
-DB = CONN.tracker
+conn = pymongo.MongoClient('54.172.75.176')
+DB = conn.tracker
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
