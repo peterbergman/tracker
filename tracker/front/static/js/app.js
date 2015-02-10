@@ -1,6 +1,7 @@
 $(function(){
   App = {
     constants: {
+      chartId: '#chart',
       api: {
         host: 'localhost',
         port: 8000,
@@ -27,6 +28,9 @@ $(function(){
       } else if (bodyClass == 'browsers') {
         App.loadBrowsers();
       }
+    },
+    getChartCtx: function() {
+      return $(App.constants.chartId).get(0).getContext("2d");
     },
     getApiUrl: function(protocol, host, port, accountId, siteId, startDate, endDate, report) {
       return protocol + '://' + host + ':' + port + '/api/accounts/' + accountId + '/sites/' + siteId + '/start_date/' + startDate + '/end_date/' + endDate + '/' + report;
@@ -70,6 +74,32 @@ $(function(){
       urlHitsTable += '</tbody></table>';
       $('.table-responsive').html(urlHitsTable)
     },
+    populatePageViewChart: function(data) {
+      var labelsArray = [];
+      for (var index in data.sites[0].dates) {
+        labelsArray.push(data.sites[0].dates[index].date);
+      }
+      var dataArray = [];
+      for (var index in data.sites[0].dates) {
+        dataArray.push(data.sites[0].dates[index].data.page_views.total);
+      }
+      var data = {
+        labels: labelsArray,
+        datasets: [
+          {
+            label: "Page views",
+            fillColor: "rgba(151,187,205,0.2)",
+            strokeColor: "rgba(151,187,205,1)",
+            pointColor: "rgba(151,187,205,1)",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(151,187,205,1)",
+            data: dataArray
+          }
+        ]
+      };
+      var myLineChart = new Chart(App.getChartCtx()).Line(data, {});
+    },
     loadPageViews: function() {
       console.log('loading page views...');
       $.ajax({
@@ -82,6 +112,7 @@ $(function(){
                 App.constants.reports.pageViews),
       }).done(function(data, textStatus, jqXHR) {
         App.populateUrlPageViewTable(data);
+        App.populatePageViewChart(data);
       })
     },
     loadVisitors: function() {
