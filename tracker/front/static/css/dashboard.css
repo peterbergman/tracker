@@ -143,6 +143,7 @@ body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
 /*
  * General stuff
  */
@@ -162,4 +163,14 @@ body {
 
 .account-dropdown-button {
   padding: 10px;
+}
+
+.border-box {
+  border: 1px solid #B6B6B6;
+  background-color: #ffffff;
+  padding-top: 50px;
+}
+
+.padded-container {
+  padding-top: 150px;
 }
