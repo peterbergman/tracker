@@ -12,6 +12,20 @@ $(function(){
         visitors: 'visitors',
         browsers: 'browsers'
       },
+      chartColors: [
+        {
+          color: '#F7464A',
+          highLight: '#FF5A5E'
+        },
+        {
+          color: '#46BFBD',
+          highLight: '#5AD3D1'
+        },
+        {
+          color: '#FDB45C',
+          highLight: '#FFC870'
+        }
+      ],
       debug: {
         accountId: 'edbdf639f813482c986e2c4a536ec3fb',
         siteId: '627ebf16104240b28c8f2e25ed436655',
@@ -64,7 +78,13 @@ $(function(){
             }
           ]
         };
-        var myLineChart = new Chart(App.getChartCtx()).Line(data, {});
+        new Chart(App.getChartCtx()).Line(data, {});
+      },
+      createPieChart: function(charLabel, dataArray) {
+        var chart = new Chart(App.getChartCtx()).Pie(dataArray, {showTooltips: true, customTooltips:true, legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li style=\"list-style: square; font-size: 16px; color: <%=segments[i].fillColor%>; content: *; font-size: 1.7em; margin-left: -19px; padding-right: 0.25em; position: relative;\"><%if(segments[i].label){%><span style=\"color: #333; font-size: 9px\"><%=segments[i].label%></span><%}%></li><%}%></ul>"
+});
+        var legend = chart.generateLegend();
+        $('#chart-legend').html(legend);
       },
       sortUrlArray: function(urlArray) {
         urlArray.sort(function(a, b) {
@@ -161,20 +181,25 @@ $(function(){
         App.createChart('Visitors', labelsArray, dataArray);
       },
       populateBrowserVisitorTable: function(data) {
-        var browsers = App.aggregateVisitorsPerBrowser(data);
-        var browserArray = [];
-        for (var browser in browsers) {
-          browserArray.push({'browser': browser, 'visitors': browsers[browser]});
-        }
-        App.sortBrowserArray(browserArray);
         var browserVisitorsTable = '<table class="table table-striped"><thead><tr><th>Browser</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th class="right-text">Visitors</th></tr></thead><tbody>';
-        for (var index in browserArray) {
-          browserVisitorsTable += '<tr>' + '<td>' + browserArray[index].browser + '</td>';
+        for (var index in data) {
+          browserVisitorsTable += '<tr>' + '<td>' + data[index].browser + '</td>';
           browserVisitorsTable += '<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>';
-          browserVisitorsTable += '<td class="right-text">' + browserArray[index].visitors + '</td></tr>'
+          browserVisitorsTable += '<td class="right-text">' + data[index].visitors + '</td></tr>'
         }
         browserVisitorsTable += '</tbody></table>';
         $('.table-responsive').html(browserVisitorsTable)
+      },
+      populateBrowserChart: function(data) {
+        var dataArray = [];
+        var browserCount = (data.length > 3 ? 3 : data.length);
+        for (var index in data) {
+          dataArray.push({value: data[index].visitors,
+            color: App.constants.chartColors[index].color,
+            highlight: App.constants.chartColors[index].highLight,
+            label: data[index].browser})
+        }
+        App.createPieChart('Browsers', dataArray);
       },
       loadPageViews: function() {
         App.sendApiRequest(App.constants.debug.accountId,
@@ -205,7 +230,14 @@ $(function(){
             App.constants.debug.endDate,
             App.constants.reports.browsers,
             function(data){
-              App.populateBrowserVisitorTable(data);
+              var browsers = App.aggregateVisitorsPerBrowser(data);
+              var browserArray = [];
+              for (var browser in browsers) {
+                browserArray.push({'browser': browser, 'visitors': browsers[browser]});
+              }
+              App.sortBrowserArray(browserArray);
+              App.populateBrowserVisitorTable(browserArray);
+              App.populateBrowserChart(browserArray);
             });
         }
       }
