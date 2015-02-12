@@ -14,7 +14,7 @@ def get_account(request, value):
     else:
         key = 'email'
     response = HttpResponse(content_type='application/json')
-    response.content = dumps(settings.DB.account.find({key : value}, {'password': False, '_id': False}))
+    response.content = dumps(settings.DB.account.find({key : value}, {'password': False, '_id': False})[0])
     return response
 
 def create_account(request):
