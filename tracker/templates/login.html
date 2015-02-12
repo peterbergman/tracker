@@ -25,11 +25,11 @@
   <![endif]-->
 </head>
 
-<body class="login">
+<body class="login" background={% static "img/login-bg.jpg" %}>
 
-  <div class="container">
+  <div class="container padded-container">
 
-    <form class="form-signin">
+    <form class="form-signin border-box">
       <div class="row">
         <div class="col-lg-6 col-lg-offset-3 text-center">
           <img class="logo-img-login" src={% static "img/logo.png" %}>
@@ -54,6 +54,7 @@
   ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script src={% static "js/jquery.cookie.js" %}></script>
   <script src={% static "bootstrap/js/bootstrap.min.js" %}></script>
   <script src={% static "js/App.js" %}></script>
 </body>
