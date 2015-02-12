@@ -151,7 +151,12 @@ body {
    text-align: right;
 }
 
-.logo-img {
+.logo-img-login {
+  width: 90px;
+  padding-bottom: 50px;
+}
+
+.logo-img-navbar {
   width: 45px;
 }
 
