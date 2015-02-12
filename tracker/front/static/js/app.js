@@ -56,8 +56,11 @@ $(function(){
         'GET',
         {'Authorization': Base64.encode(username + ':' + password)},
         function(data, statusCode){
-          console.log(data);
-          console.log(statusCode);
+          if (statusCode == 200) {
+            document.location = 'page_views';
+          } else {
+            console.log('login failed!');
+          }
         });
     },
     getChartCtx: function() {
