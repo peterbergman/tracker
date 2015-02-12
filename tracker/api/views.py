@@ -5,6 +5,7 @@ from django.conf import settings
 from bson.json_util import dumps
 import jsonpickle
 import json
+import base64
 from helper import aggregation
 
 def get_account(request, value):
@@ -13,8 +14,13 @@ def get_account(request, value):
         key = 'account_id'
     else:
         key = 'email'
-    response = HttpResponse(content_type='application/json')
-    response.content = dumps(settings.DB.account.find({key : value}, {'password': False, '_id': False})[0])
+    print('login: ' + str(base64.b64decode(request.META['HTTP_AUTHORIZATION'])))
+    result = settings.DB.account.find({key : value}, {'password': False, '_id': False});
+    if result.count() == 0:
+        response = HttpResponse(content_type='application/json', status=404)
+    else:
+        response = HttpResponse(content_type='application/json')
+        response.content = dumps(result[0])
     return response
 
 def create_account(request):
