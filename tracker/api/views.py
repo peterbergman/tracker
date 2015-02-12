@@ -7,10 +7,14 @@ import jsonpickle
 import json
 from helper import aggregation
 
-def get_account(request, account_id):
+def get_account(request, value):
     """Fetch and existing account from the database."""
+    if '@' not in value:
+        key = 'account_id'
+    else:
+        key = 'email'
     response = HttpResponse(content_type='application/json')
-    response.content = dumps(settings.DB.account.find({'account_id' : account_id}, {'password': False, '_id': False}))
+    response.content = dumps(settings.DB.account.find({key : value}, {'password': False, '_id': False}))
     return response
 
 def create_account(request):
