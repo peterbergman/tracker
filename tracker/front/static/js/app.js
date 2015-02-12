@@ -69,8 +69,10 @@ $(function(){
         url: url,
         method: requestMethod,
         headers: headers,
-      }).done(function(data, textStatus, jqXHR) {
-        callback(data, jqXHR.status);
+      }).always(function(jqXHROrData, textStatus, jqXHROrErrorThrown) {
+        if (textStatus == 'error') {
+          callback({}, jqXHROrData.status);
+        }
       });
     },
     createChart: function(chartLabel, labelsArray, dataArray) {
