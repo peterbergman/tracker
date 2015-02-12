@@ -72,6 +72,12 @@ $(function(){
         });
         return urlArray;
       },
+      sortBrowserArray: function(browserArray) {
+        browserArray.sort(function(a, b) {
+          return b.total - a.total;
+        });
+        return browserArray;
+      },
       aggregatePageViewsPerUrl: function(data) {
         var urls = {};
         for (var dateIndex in data.sites[0].dates) {
@@ -88,6 +94,23 @@ $(function(){
           }
         }
         return urls;
+      },
+      aggregateVisitorsPerBrowser: function(data) {
+        var browsers = {};
+        for (var dateIndex in data.sites[0].dates) {
+          var date = data.sites[0].dates[dateIndex];
+          for (var browserIndex in date.data.browsers) {
+            var browser = date.data.browsers[browserIndex].browser;
+            var visitors = date.data.browsers[browserIndex].total;
+            var aggregatedVisitors = browsers[browser];
+            if (typeof aggregatedVisitors == 'undefined') {
+              browsers[browser] = visitors;
+            } else {
+              browsers[browser] += visitors;
+            }
+          }
+        }
+        return browsers;
       },
       populateUrlPageViewTable: function(data) {
         var urls = App.aggregatePageViewsPerUrl(data);
@@ -137,6 +160,22 @@ $(function(){
         }
         App.createChart('Visitors', labelsArray, dataArray);
       },
+      populateBrowserVisitorTable: function(data) {
+        var browsers = App.aggregateVisitorsPerBrowser(data);
+        var browserArray = [];
+        for (var browser in browsers) {
+          browserArray.push({'browser': browser, 'visitors': browsers[browser]});
+        }
+        App.sortBrowserArray(browserArray);
+        var browserVisitorsTable = '<table class="table table-striped"><thead><tr><th>Browser</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th class="right-text">Visitors</th></tr></thead><tbody>';
+        for (var index in browserArray) {
+          browserVisitorsTable += '<tr>' + '<td>' + browserArray[index].browser + '</td>';
+          browserVisitorsTable += '<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>';
+          browserVisitorsTable += '<td class="right-text">' + browserArray[index].visitors + '</td></tr>'
+        }
+        browserVisitorsTable += '</tbody></table>';
+        $('.table-responsive').html(browserVisitorsTable)
+      },
       loadPageViews: function() {
         App.sendApiRequest(App.constants.debug.accountId,
           App.constants.debug.siteId,
@@ -160,7 +199,14 @@ $(function(){
             });
         },
         loadBrowsers: function() {
-          console.log('loading browsers..');
+          App.sendApiRequest(App.constants.debug.accountId,
+            App.constants.debug.siteId,
+            App.constants.debug.startDate,
+            App.constants.debug.endDate,
+            App.constants.reports.browsers,
+            function(data){
+              App.populateBrowserVisitorTable(data);
+            });
         }
       }
       App.init();
