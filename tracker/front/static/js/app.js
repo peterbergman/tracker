@@ -49,8 +49,10 @@ $(function(){
       App.sendApiRequest(App.getApiAccountUrl(App.constants.api.protocol,
         App.constants.api.host, App.constants.api.port, App.constants.debug.accountId),
         'GET',
-        function(data){
+        {'Authorization':'Basic xxxxxxxxxxxxx'},
+        function(data, statusCode){
           console.log(data);
+          console.log(statusCode);
         });
     },
     getChartCtx: function() {
@@ -62,12 +64,13 @@ $(function(){
     getApiAccountUrl: function(protocol, host, port, accountId) {
       return protocol + '://' + host + ':' + port + '/api/accounts/' + accountId;
     },
-    sendApiRequest: function(url, requestMethod, callback) {
+    sendApiRequest: function(url, requestMethod, headers, callback) {
       $.ajax({
         url: url,
-        method: requestMethod
+        method: requestMethod,
+        headers: headers,
       }).done(function(data, textStatus, jqXHR) {
-        callback(data);
+        callback(data, jqXHR.status);
       });
     },
     createChart: function(chartLabel, labelsArray, dataArray) {
@@ -218,6 +221,7 @@ $(function(){
         App.constants.debug.endDate,
         App.constants.reports.pageViews),
         'GET',
+        {},
         function(data){
           App.populateUrlPageViewTable(data);
           App.populatePageViewChart(data);
@@ -232,6 +236,7 @@ $(function(){
           App.constants.debug.endDate,
           App.constants.reports.visitors),
           'GET',
+          {},
           function(data){
             App.populateDateVisitorTable(data);
             App.populateVisitorChart(data);
@@ -246,6 +251,7 @@ $(function(){
             App.constants.debug.endDate,
             App.constants.reports.browsers),
             'GET',
+            {},
             function(data){
               var browsers = App.aggregateVisitorsPerBrowser(data);
               var browserArray = [];
