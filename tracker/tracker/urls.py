@@ -3,6 +3,7 @@ from django.contrib import admin
 
 urlpatterns = patterns('',
     url(r'^datahandler/([^/]+)/([^/]+)/$', 'datahandler.views.delegate_request'),
+
     url(r'^api/accounts/([^/]+)$', 'api.views.get_account'),
     url(r'^api/accounts/$', 'api.views.create_account'),
     url(r'^api/accounts/([^/]+)/sites/([^/]+)/start_date/([^/]+)/end_date/([^/]+)$', 'api.views.site'),
@@ -13,4 +14,5 @@ urlpatterns = patterns('',
     url(r'^page_views/$', 'front.views.page_views'),
     url(r'^visitors/$', 'front.views.visitors'),
     url(r'^browsers/$', 'front.views.browsers'),
+    url(r'^$', 'front.views.login'),
 )
