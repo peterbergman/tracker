@@ -34,6 +34,7 @@ $(function(){
       }
     },
     init: function() {
+      $.cookie.json = true;
       var bodyClass = $('body').attr('class');
       if (bodyClass == 'login') {
         $('.form-signin').on('submit', function(event) {
@@ -41,10 +42,13 @@ $(function(){
         });
       } else if (bodyClass == 'page-views') {
         App.loadPageViews();
+        App.setLoggedInData();
       } else if (bodyClass == 'visitors') {
         App.loadVisitors();
+        App.setLoggedInData();
       } else if (bodyClass == 'browsers') {
         App.loadBrowsers();
+        App.setLoggedInData();
       }
     },
     loginButtonListener: function(event) {
@@ -57,6 +61,7 @@ $(function(){
         {'Authorization': Base64.encode(username + ':' + password)},
         function(data, statusCode){
           if (statusCode == 200) {
+            $.cookie('user_data', data);
             document.location = 'page_views';
           } else {
             console.log('login failed!');
@@ -104,7 +109,7 @@ $(function(){
       new Chart(App.getChartCtx()).Line(data, {});
     },
     createPieChart: function(charLabel, dataArray) {
-      var chart = new Chart(App.getChartCtx()).Pie(dataArray, {showTooltips: true, customTooltips:true, legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li style=\"list-style: square; font-size: 16px; color: <%=segments[i].fillColor%>; content: *; font-size: 1.7em; margin-left: -19px; padding-right: 0.25em; position: relative;\"><%if(segments[i].label){%><span style=\"color: #333; font-size: 9px\"><%=segments[i].label%></span><%}%></li><%}%></ul>"
+      var chart = new Chart(App.getChartCtx()).Pie(dataArray, {showTooltips: false, legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li style=\"list-style: square; font-size: 16px; color: <%=segments[i].fillColor%>; content: *; font-size: 1.7em; margin-left: -19px; padding-right: 0.25em; position: relative;\"><%if(segments[i].label){%><span style=\"color: #333; font-size: 9px\"><%=segments[i].label%></span><%}%></li><%}%></ul>"
     });
     var legend = chart.generateLegend();
     $('#chart-legend').html(legend);
@@ -223,6 +228,21 @@ $(function(){
         label: data[index].browser})
       }
       App.createPieChart('Browsers', dataArray);
+    },
+    setLoggedInData: function() {
+      var userData = $.cookie('user_data')
+      App.setEmail(userData.email);
+      App.setSites(userData.sites);
+    },
+    setEmail: function(email) {
+      $('#email-dropdown').first().html(email + ' <b class="caret"></b>');
+    },
+    setSites: function(sites) {
+      var siteDropdown = $('#sites-dropdown').first();
+      for (var index in sites) {
+        siteDropdown.append('<li><a href="#">' + sites[index].site_name + '</a></li>');
+      }
+      siteDropdown.append('<li class="divider"></li><li><a href="#">Create new site</a></li>');
     },
     loadPageViews: function() {
       App.sendApiRequest(App.getApiReportUrl(App.constants.api.protocol,
