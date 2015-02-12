@@ -116,20 +116,48 @@ $(function(){
         }
         App.createChart('Page views', labelsArray, dataArray);
       },
+      populateDateVisitorTable: function(data) {
+        var dateVisitorsTable = '<table class="table table-striped"><thead><tr><th>Date</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th class="right-text">Visitors</th></tr></thead><tbody>';
+        for (var dateIndex in data.sites[0].dates) {
+          dateVisitorsTable += '<tr>' + '<td>' + data.sites[0].dates[dateIndex].date + '</td>';
+          dateVisitorsTable += '<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>';
+          dateVisitorsTable += '<td class="right-text">' + data.sites[0].dates[dateIndex].data.visitors + '</td></tr>'
+        }
+        dateVisitorsTable += '</tbody></table>';
+        $('.table-responsive').html(dateVisitorsTable)
+      },
+      populateVisitorChart: function(data) {
+        var labelsArray = [];
+        for (var index in data.sites[0].dates) {
+          labelsArray.push(data.sites[0].dates[index].date);
+        }
+        var dataArray = [];
+        for (var index in data.sites[0].dates) {
+          dataArray.push(data.sites[0].dates[index].data.visitors);
+        }
+        App.createChart('Visitors', labelsArray, dataArray);
+      },
       loadPageViews: function() {
-        console.log('loading page views...');
-        var x = App.sendApiRequest(App.constants.debug.accountId,
+        App.sendApiRequest(App.constants.debug.accountId,
           App.constants.debug.siteId,
           App.constants.debug.startDate,
           App.constants.debug.endDate,
           App.constants.reports.pageViews,
           function(data){
             App.populateUrlPageViewTable(data);
-            App.populatePageViewChart(data)
+            App.populatePageViewChart(data);
           });
         },
         loadVisitors: function() {
-          console.log('loading visitors...');
+          App.sendApiRequest(App.constants.debug.accountId,
+            App.constants.debug.siteId,
+            App.constants.debug.startDate,
+            App.constants.debug.endDate,
+            App.constants.reports.visitors,
+            function(data){
+              App.populateDateVisitorTable(data);
+              App.populateVisitorChart(data);
+            });
         },
         loadBrowsers: function() {
           console.log('loading browsers..');
