@@ -35,13 +35,18 @@ $(function(){
     },
     init: function() {
       var bodyClass = $('body').attr('class');
-      if (bodyClass == 'page-views') {
+      if (bodyClass == 'login') {
+        $('#login').on('click', App.loginButtonListener);
+      } else if (bodyClass == 'page-views') {
         App.loadPageViews();
       } else if (bodyClass == 'visitors') {
         App.loadVisitors();
       } else if (bodyClass == 'browsers') {
         App.loadBrowsers();
       }
+    },
+    loginButtonListener: function() {
+
     },
     getChartCtx: function() {
       return $(App.constants.chartId).get(0).getContext('2d');
