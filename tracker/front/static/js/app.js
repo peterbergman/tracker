@@ -21,7 +21,7 @@ $(function(){
     },
     init: function() {
       var bodyClass = $('body').attr('class');
-      if (bodyClass == 'page_views') {
+      if (bodyClass == 'page-views') {
         App.loadPageViews();
       } else if (bodyClass == 'visitors') {
         App.loadVisitors();
@@ -30,97 +30,110 @@ $(function(){
       }
     },
     getChartCtx: function() {
-      return $(App.constants.chartId).get(0).getContext("2d");
+      return $(App.constants.chartId).get(0).getContext('2d');
     },
     getApiUrl: function(protocol, host, port, accountId, siteId, startDate, endDate, report) {
       return protocol + '://' + host + ':' + port + '/api/accounts/' + accountId + '/sites/' + siteId + '/start_date/' + startDate + '/end_date/' + endDate + '/' + report;
     },
-    sortUrlArray: function(urlArray) {
-      urlArray.sort(function(a, b) {
-        return b.hits - a.hits;
-      });
-      return urlArray;
-    },
-    aggregatePageViewsPerUrl: function(data) {
-      var urls = {};
-      for (var dateIndex in data.sites[0].dates) {
-        var date = data.sites[0].dates[dateIndex];
-        for (var pageIndex in date.data.page_views.pages) {
-          var url = date.data.page_views.pages[pageIndex].page_url;
-          var pageViews = date.data.page_views.pages[pageIndex].page_views;
-          var aggregatedPageViews = urls[url];
-          if (typeof aggregatedPageViews == 'undefined') {
-            urls[url] = pageViews;
-          } else {
-            urls[url] += pageViews;
-          }
-        }
-      }
-      return urls;
-    },
-    populateUrlPageViewTable: function(data) {
-      var urls = App.aggregatePageViewsPerUrl(data);
-      var urlArray = [];
-      for (var url in urls) {
-        urlArray.push({'url': url, 'hits': urls[url]});
-      }
-      App.sortUrlArray(urlArray);
-      var urlHitsTable = '<table class="table table-striped"><thead><tr><th>URL</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th class="right-text">Hits</th></tr></thead><tbody>';
-      for (var index in urlArray) {
-        urlHitsTable += '<tr>' + '<td>' + urlArray[index].url + '</td>';
-        urlHitsTable += '<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>';
-        urlHitsTable += '<td class="right-text">' + urlArray[index].hits + '</td></tr>'
-      }
-      urlHitsTable += '</tbody></table>';
-      $('.table-responsive').html(urlHitsTable)
-    },
-    populatePageViewChart: function(data) {
-      var labelsArray = [];
-      for (var index in data.sites[0].dates) {
-        labelsArray.push(data.sites[0].dates[index].date);
-      }
-      var dataArray = [];
-      for (var index in data.sites[0].dates) {
-        dataArray.push(data.sites[0].dates[index].data.page_views.total);
-      }
-      var data = {
-        labels: labelsArray,
-        datasets: [
-          {
-            label: "Page views",
-            fillColor: "rgba(151,187,205,0.2)",
-            strokeColor: "rgba(151,187,205,1)",
-            pointColor: "rgba(151,187,205,1)",
-            pointStrokeColor: "#fff",
-            pointHighlightFill: "#fff",
-            pointHighlightStroke: "rgba(151,187,205,1)",
-            data: dataArray
-          }
-        ]
-      };
-      var myLineChart = new Chart(App.getChartCtx()).Line(data, {});
-    },
-    loadPageViews: function() {
-      console.log('loading page views...');
+    sendApiRequest: function(accountId, siteId, startDate, endDate, report, callback) {
       $.ajax({
         url: App.getApiUrl(App.constants.api.protocol,
-                App.constants.api.host, App.constants.api.port,
-                App.constants.debug.accountId,
-                App.constants.debug.siteId,
-                App.constants.debug.startDate,
-                App.constants.debug.endDate,
-                App.constants.reports.pageViews),
-      }).done(function(data, textStatus, jqXHR) {
-        App.populateUrlPageViewTable(data);
-        App.populatePageViewChart(data);
-      })
-    },
-    loadVisitors: function() {
-      console.log('loading visitors...');
-    },
-    loadBrowsers: function() {
-      console.log('loading browsers..');
-    }
-  }
-  App.init();
-});
+          App.constants.api.host, App.constants.api.port,
+          accountId,
+          siteId,
+          startDate,
+          endDate,
+          report),
+        }).done(function(data, textStatus, jqXHR) {
+          callback(data);
+        });
+      },
+      createChart: function(chartLabel, labelsArray, dataArray) {
+        var data = {
+          labels: labelsArray,
+          datasets: [
+            {
+              label: chartLabel,
+              fillColor: 'rgba(151,187,205,0.2)',
+              strokeColor: 'rgba(151,187,205,1)',
+              pointColor: 'rgba(151,187,205,1)',
+              pointStrokeColor: '#fff',
+              pointHighlightFill: '#fff',
+              pointHighlightStroke: 'rgba(151,187,205,1)',
+              data: dataArray
+            }
+          ]
+        };
+        var myLineChart = new Chart(App.getChartCtx()).Line(data, {});
+      },
+      sortUrlArray: function(urlArray) {
+        urlArray.sort(function(a, b) {
+          return b.hits - a.hits;
+        });
+        return urlArray;
+      },
+      aggregatePageViewsPerUrl: function(data) {
+        var urls = {};
+        for (var dateIndex in data.sites[0].dates) {
+          var date = data.sites[0].dates[dateIndex];
+          for (var pageIndex in date.data.page_views.pages) {
+            var url = date.data.page_views.pages[pageIndex].page_url;
+            var pageViews = date.data.page_views.pages[pageIndex].page_views;
+            var aggregatedPageViews = urls[url];
+            if (typeof aggregatedPageViews == 'undefined') {
+              urls[url] = pageViews;
+            } else {
+              urls[url] += pageViews;
+            }
+          }
+        }
+        return urls;
+      },
+      populateUrlPageViewTable: function(data) {
+        var urls = App.aggregatePageViewsPerUrl(data);
+        var urlArray = [];
+        for (var url in urls) {
+          urlArray.push({'url': url, 'hits': urls[url]});
+        }
+        App.sortUrlArray(urlArray);
+        var urlHitsTable = '<table class="table table-striped"><thead><tr><th>URL</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th class="right-text">Hits</th></tr></thead><tbody>';
+        for (var index in urlArray) {
+          urlHitsTable += '<tr>' + '<td>' + urlArray[index].url + '</td>';
+          urlHitsTable += '<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>';
+          urlHitsTable += '<td class="right-text">' + urlArray[index].hits + '</td></tr>'
+        }
+        urlHitsTable += '</tbody></table>';
+        $('.table-responsive').html(urlHitsTable)
+      },
+      populatePageViewChart: function(data) {
+        var labelsArray = [];
+        for (var index in data.sites[0].dates) {
+          labelsArray.push(data.sites[0].dates[index].date);
+        }
+        var dataArray = [];
+        for (var index in data.sites[0].dates) {
+          dataArray.push(data.sites[0].dates[index].data.page_views.total);
+        }
+        App.createChart('Page views', labelsArray, dataArray);
+      },
+      loadPageViews: function() {
+        console.log('loading page views...');
+        var x = App.sendApiRequest(App.constants.debug.accountId,
+          App.constants.debug.siteId,
+          App.constants.debug.startDate,
+          App.constants.debug.endDate,
+          App.constants.reports.pageViews,
+          function(data){
+            App.populateUrlPageViewTable(data);
+            App.populatePageViewChart(data)
+          });
+        },
+        loadVisitors: function() {
+          console.log('loading visitors...');
+        },
+        loadBrowsers: function() {
+          console.log('loading browsers..');
+        }
+      }
+      App.init();
+    });
