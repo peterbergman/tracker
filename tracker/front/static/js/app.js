@@ -13,11 +13,11 @@ $(function() {
                 browsers: 'browsers'
             },
             chartColors: [{
-                color: '#F7464A',
-                highLight: '#FF5A5E'
-            }, {
                 color: '#368DBA',
                 highLight: '#44ADE3'
+            }, {
+                color: '#F7464A',
+                highLight: '#FF5A5E'
             }, {
                 color: '#FDB45C',
                 highLight: '#FFC870'
@@ -114,10 +114,11 @@ $(function() {
                     data: dataArray
                 }]
             };
-            new Chart(App.getChartCtx()).Line(data, {});
+            new Chart(App.getChartCtx()).Line(data, {responsive: true});
         },
         createPieChart: function(charLabel, dataArray) {
             var chart = new Chart(App.getChartCtx()).Pie(dataArray, {
+                responsive: true,
                 showTooltips: false,
                 legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li style=\"list-style: square; font-size: 16px; color: <%=segments[i].fillColor%>; content: *; font-size: 1.7em; margin-left: -19px; padding-right: 0.25em; position: relative;\"><%if(segments[i].label){%><span style=\"color: #333; font-size: 9px\"><%=segments[i].label%></span><%}%></li><%}%></ul>"
             });
