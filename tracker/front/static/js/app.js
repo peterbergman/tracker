@@ -34,20 +34,29 @@ $(function() {
             var bodyClass = $('body').attr('class');
             if (bodyClass == 'login') {
                 $('.form-signin').on('submit', function(event) {
-                    App.loginButtonListener(event);
+                    App.loginListener(event);
                 });
             } else if (bodyClass == 'page-views') {
                 App.loadPageViews();
                 App.setLoggedInData();
+                $('.logout').on('click', function() {
+                    App.logoutListener();
+                });
             } else if (bodyClass == 'visitors') {
                 App.loadVisitors();
                 App.setLoggedInData();
+                $('.logout').on('click', function() {
+                    App.logoutListener();
+                });
             } else if (bodyClass == 'browsers') {
                 App.loadBrowsers();
                 App.setLoggedInData();
+                $('.logout').on('click', function() {
+                    App.logoutListener();
+                });
             }
         },
-        loginButtonListener: function(event) {
+        loginListener: function(event) {
             event.preventDefault();
             var username = $('#inputEmail').first().val();
             var password = $('#inputPassword').first().val();
@@ -64,6 +73,10 @@ $(function() {
                         console.log('login failed!');
                     }
                 });
+        },
+        logoutListener: function() {
+          $.removeCookie('user_data', {path: '/'});
+          document.location = '/';
         },
         getChartCtx: function() {
             return $(App.constants.chartId).get(0).getContext('2d');
