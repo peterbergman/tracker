@@ -91,13 +91,11 @@
     </div>
   </div>
 
-  <!-- Bootstrap core JavaScript
-  ================================================== -->
-  <!-- Placed at the end of the document so the pages load faster -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-  <script src={% static "js/jquery.cookie.js" %}></script>
-  <script src={% static "bootstrap/js/bootstrap.min.js" %}></script>
-  <script src={% static "js/Chart.min.js" %}></script>
-  <script src={% static "js/App.js" %}></script>
+  <script data-main={% static "js/common.js" %} src={% static "js/lib/require.js" %}></script>
+  <script>
+  require(['common'], function() {
+    require(['page/browsers']);
+  })
+  </script>
 </body>
 </html>
