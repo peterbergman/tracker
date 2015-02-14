@@ -14,13 +14,19 @@ def get_account(request, value):
         key = 'account_id'
     else:
         key = 'email'
-    print('login: ' + str(base64.b64decode(request.META['HTTP_AUTHORIZATION'])))
-    result = settings.DB.account.find({key : value}, {'password': False, '_id': False});
-    if result.count() == 0:
-        response = HttpResponse(content_type='application/json', status=404)
+    auth_header = request.META.get('HTTP_AUTHORIZATION')
+    if auth_header == None:
+        response = HttpResponse(content_type='application/json', status=403)
     else:
-        response = HttpResponse(content_type='application/json')
-        response.content = dumps(result[0])
+        auth_string = str(base64.b64decode(auth_header))
+        username = auth_string.split(':')[0][2:]
+        password = auth_string.split(':')[1][:-1]
+        result = settings.DB.account.find({key : username, 'password': password}, {'password': False, '_id': False});
+        if result.count() == 0:
+            response = HttpResponse(content_type='application/json', status=404)
+        else:
+            response = HttpResponse(content_type='application/json')
+            response.content = dumps(result[0])
     return response
 
 def create_account(request):
