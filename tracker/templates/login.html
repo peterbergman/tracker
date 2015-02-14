@@ -25,7 +25,7 @@
   <![endif]-->
 </head>
 
-<body class="login" background={% static "img/login-bg.jpg" %}>
+<body background={% static "img/login-bg.jpg" %}>
 
   <div class="container padded-container">
 
@@ -54,6 +54,17 @@
   require(['common'], function() {
     require(['page/login']);
   })
+  </script>
+  <script type="text/javascript">
+  tracker = {accountId: 'edbdf639f813482c986e2c4a536ec3fb', siteId: '627ebf16104240b28c8f2e25ed436655'};
+  (function () {
+          var t = document.createElement('script');
+          t.type = 'text/javascript';
+          t.async = true;
+          t.src = 'http://localhost:8000/static/js/Tracker.js';
+          var a = document.getElementsByTagName('script')[0];
+          a.parentNode.insertBefore(t, a);
+      } ());
   </script>
 </body>
 </html>
