@@ -64,12 +64,12 @@ define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], functio
     populateBrowserChart = function(data) {
       var dataArray = [];
       var browserCount = (data.length > 3 ? 3 : data.length);
-      for (var index in data) {
+      for (var i = 0; i < browserCount; i++) {
         dataArray.push({
-          value: data[index].visitors,
-          color: constants.chartColors[index].color,
-          highlight: constants.chartColors[index].highLight,
-          label: data[index].browser
+          value: data[i].visitors,
+          color: constants.chartColors[i].color,
+          highlight: constants.chartColors[i].highLight,
+          label: data[i].browser
         })
       }
       helpers.createPieChart('Browsers', dataArray);
