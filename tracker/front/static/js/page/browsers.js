@@ -1,5 +1,12 @@
 define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], function($, constants, helpers){
 
+  sortBrowserArray = function(browserArray) {
+    browserArray.sort(function(a, b) {
+      return b.visitors - a.visitors;
+    });
+    return browserArray;
+  }
+
   loadBrowsers = function() {
     helpers.sendApiRequest(helpers.getApiReportUrl(constants.api.protocol,
       constants.api.host,
@@ -19,7 +26,7 @@ define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], functio
             'visitors': browsers[browser]
           });
         }
-        helpers.sortBrowserArray(browserArray);
+        sortBrowserArray(browserArray);
         populateBrowserVisitorTable(browserArray);
         populateBrowserChart(browserArray);
       });

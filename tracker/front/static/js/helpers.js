@@ -47,18 +47,6 @@ define(['jquery', 'chartjs', 'constants', 'jquery_cookie'], function($, Chart, c
       var legend = chart.generateLegend();
       $('#chart-legend').html(legend);
     },
-    sortUrlArray: function(urlArray) {
-      urlArray.sort(function(a, b) {
-        return b.hits - a.hits;
-      });
-      return urlArray;
-    },
-    sortBrowserArray: function(browserArray) {
-      browserArray.sort(function(a, b) {
-        return b.visitors - a.visitors;
-      });
-      return browserArray;
-    },
     setLoggedInData: function() {
       var userData = $.cookie('user_data')
       helpers.setEmail(userData.email);

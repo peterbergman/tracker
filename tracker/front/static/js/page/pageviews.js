@@ -5,6 +5,13 @@ define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], functio
     document.location = '/';
   }
 
+  sortUrlArray = function(urlArray) {
+    urlArray.sort(function(a, b) {
+      return b.hits - a.hits;
+    });
+    return urlArray;
+  }
+
   loadPageViews = function() {
     helpers.sendApiRequest(helpers.getApiReportUrl(constants.api.protocol,
       constants.api.host,
@@ -30,7 +37,7 @@ define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], functio
           'hits': urls[url]
         });
       }
-      helpers.sortUrlArray(urlArray);
+      sortUrlArray(urlArray);
       var urlHitsTable = '<table class="table table-striped"><thead><tr><th>URL</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th class="right-text">Hits</th></tr></thead><tbody>';
       for (var index in urlArray) {
         urlHitsTable += '<tr>' + '<td>' + urlArray[index].url + '</td>';
