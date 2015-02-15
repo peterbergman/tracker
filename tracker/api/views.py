@@ -15,7 +15,6 @@ def get_account(request, value):
     else:
         key = 'email'
     auth_header = request.META.get('HTTP_AUTHORIZATION')
-    print(request.META)
     if auth_header == None:
         response = HttpResponse(content_type='application/json', status=403)
     else:
@@ -23,6 +22,8 @@ def get_account(request, value):
         username = auth_string.split(':')[0][2:]
         password = auth_string.split(':')[1][:-1]
         result = settings.DB.account.find({key : username, 'password': password}, {'password': False, '_id': False});
+        print('username: ' + username)
+        print('password: ' + password)
         if result.count() == 0:
             response = HttpResponse(content_type='application/json', status=404)
         else:
