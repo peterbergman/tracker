@@ -97,25 +97,28 @@ define(['jquery', 'chartjs', 'constants', 'jquery_cookie'], function($, Chart, c
     },
     setEmail: function(email) {
       if (typeof email != 'undefined') {
-        $('#email-dropdown').first().html(email + ' <b class="caret"></b>');        
+        $('#email-dropdown').first().html(email + ' <b class="caret"></b>');
       }
     },
     logoutListener: function() {
       $.removeCookie('user_data', {path: '/'});
       document.location = '/';
     },
+    siteListener: function(clickedSite) {
+      var site_name = $(this).text();
+      var site_id = $(this).attr('id');
+      $('#site-box').val(site_name);
+      helpers.setSelectedSite(site_id);
+    },
     setSites: function(sites) {
       var siteDropdown = $('#sites-dropdown').first();
       for (var index in sites) {
         siteDropdown.append('<li id="'+ sites[index].site_id +'"><a href="#">' + sites[index].site_name + '</a></li>');
         $('#sites-dropdown li').eq(index).on('click', function(){
-          var site_name = $(this).text();
-          var site_id = $(this).attr('id');
-          $('#site-box').val(site_name);
-          helpers.setSelectedSite(site_id);
+          siteListner(this);
         });
       }
-      siteDropdown.append('<li class="divider"></li><li><a href="#">Create new site</a></li>');
+      siteDropdown.append('<li class="divider"></li><li><a href="/create_site">Create new site</a></li>');
       if (typeof sites[0] != 'undefined') {
         $('#site-box').val(sites[0].site_name);
         helpers.setSelectedSite(sites[0].site_id);
