@@ -96,7 +96,9 @@ define(['jquery', 'chartjs', 'constants', 'jquery_cookie'], function($, Chart, c
       helpers.setSites(helpers.getSites());
     },
     setEmail: function(email) {
-      $('#email-dropdown').first().html(email + ' <b class="caret"></b>');
+      if (typeof email != 'undefined') {
+        $('#email-dropdown').first().html(email + ' <b class="caret"></b>');        
+      }
     },
     logoutListener: function() {
       $.removeCookie('user_data', {path: '/'});
