@@ -15,6 +15,7 @@ def get_account(request, value):
     else:
         key = 'email'
     auth_header = request.META.get('HTTP_AUTHORIZATION')
+    print(request.META)
     if auth_header == None:
         response = HttpResponse(content_type='application/json', status=403)
     else:
