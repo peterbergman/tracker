@@ -22,8 +22,6 @@ def get_account(request, value):
         username = auth_string.split(':')[0]
         password = auth_string.split(':')[1]
         result = settings.DB.account.find({key : username, 'password': password}, {'password': False, '_id': False});
-        print('username: ' + username)
-        print('password: ' + password)
         if result.count() == 0:
             response = HttpResponse(content_type='application/json', status=404)
         else:
