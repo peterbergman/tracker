@@ -14,5 +14,6 @@ urlpatterns = patterns('',
     url(r'^page_views/$', 'front.views.page_views'),
     url(r'^visitors/$', 'front.views.visitors'),
     url(r'^browsers/$', 'front.views.browsers'),
+    url(r'^create_site/$', 'front.views.create_site'),
     url(r'^$', 'front.views.login'),
 )
