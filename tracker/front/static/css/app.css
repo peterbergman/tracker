@@ -181,3 +181,8 @@ body {
 .padded-container {
   padding-top: 150px;
 }
+
+#site-box {
+  font-size: 12px; 
+  width: 86%;
+}
