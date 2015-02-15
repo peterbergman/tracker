@@ -2,6 +2,8 @@
 
 REPO_DIR=`pwd`
 
+sudo chmod 777 deploy.sh
+
 git pull
 sudo rm -r /var/www/tracker/api
 sudo rm -r /var/www/tracker/datahandler
