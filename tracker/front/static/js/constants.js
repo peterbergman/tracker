@@ -2,8 +2,8 @@ define([],function(){
   var constants = {
     chartId: '#chart',
     api: {
-      host: 'localhost',
-      port: 8000,
+      host: 'ec2-54-172-75-176.compute-1.amazonaws.com/',
+      port: 80,
       protocol: 'http',
     },
     reports: {
