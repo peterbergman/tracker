@@ -11,3 +11,6 @@ def visitors(request):
 
 def browsers(request):
     return render_to_response('browsers.html')
+
+def create_site(request):
+    return render_to_response('create_site.html')
