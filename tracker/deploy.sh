@@ -16,7 +16,7 @@ sudo django-admin startapp datahandler
 sudo django-admin startapp helper
 sudo django-admin startapp front
 
-cd REPO_DIR
+cd $REPO_DIR
 
 sudo cp -r api /var/www/tracker
 sudo cp -r datahandler /var/www/tracker
