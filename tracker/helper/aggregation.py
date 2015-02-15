@@ -4,13 +4,15 @@ from datetime import datetime
 def page_views(account_id, site_id, start_date, end_date):
     aggregated_data = settings.DB.command('aggregate', 'event', pipeline=[
       {
-        '$match': # only match dates within the given interval
+        '$match': # only match dates within the given interval and the specified account_id and site_id
         {
           'time':
           {
             '$gte': datetime.strptime(start_date, '%Y-%m-%d'),
             '$lt':  datetime.strptime(end_date, '%Y-%m-%d')
-          }
+          },
+          'account_id': account_id,
+          'site_id': site_id
         }
       },
       {
@@ -71,13 +73,15 @@ def page_views(account_id, site_id, start_date, end_date):
 def visitors(account_id, site_id, start_date, end_date):
     aggregated_data = settings.DB.command('aggregate', 'event', pipeline=[
       {
-        '$match': # only match dates within the given interval
+        '$match': # only match dates within the given interval and the specified account_id and site_id
         {
           'time':
           {
             '$gte': datetime.strptime(start_date, '%Y-%m-%d'),
             '$lt':  datetime.strptime(end_date, '%Y-%m-%d')
-          }
+          },
+          'account_id': account_id,
+          'site_id': site_id
         }
       },
       {
@@ -129,13 +133,15 @@ def visitors(account_id, site_id, start_date, end_date):
 def browsers(account_id, site_id, start_date, end_date):
     aggregated_data = settings.DB.command('aggregate', 'event', pipeline=[
       {
-        '$match': # only match dates within the given interval
+        '$match': # only match dates within the given interval and the specified account_id and site_id
         {
           'time':
           {
             '$gte': datetime.strptime(start_date, '%Y-%m-%d'),
             '$lt':  datetime.strptime(end_date, '%Y-%m-%d')
-          }
+          },
+          'account_id': account_id,
+          'site_id': site_id
         }
       },
       {
