@@ -1,6 +1,6 @@
 #!/bin/bash
 
-repo_dir = pwd
+REPO_DIR = pwd
 
 git pull
 sudo rm -r /var/www/tracker/api
