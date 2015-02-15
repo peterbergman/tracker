@@ -2,8 +2,7 @@
 
 REPO_DIR=`pwd`
 
-git stash
-git pull
+git reset --hard
 
 sudo chmod 777 deploy.sh
 
