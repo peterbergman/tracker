@@ -10,7 +10,7 @@ define(['jquery', 'jquery_cookie', 'bootstrap', 'constants', 'helpers', 'base64'
       },
       function(data, statusCode) {
         if (statusCode == 200) {
-          $.cookie('user_data', data);
+          $.cookie('user_data', data, {path: '/'});
           document.location = 'page_views';
         } else {
           console.log('login failed!');
