@@ -1,10 +1,5 @@
 define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], function($, constants, helpers){
 
-  logoutListener = function() {
-    $.removeCookie('user_data', {path: '/'});
-    document.location = '/';
-  }
-
   sortUrlArray = function(urlArray) {
     urlArray.sort(function(a, b) {
       return b.hits - a.hits;
@@ -13,8 +8,8 @@ define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], functio
   }
 
   loadPageViews = function() {
-    helpers.sendApiRequest(helpers.getApiReportUrl(constants.debug.accountId,
-      constants.debug.siteId,
+    helpers.sendApiRequest(helpers.getApiReportUrl(helpers.getAccountId(),
+      helpers.getSelectedSite(),
       constants.debug.startDate,
       constants.debug.endDate,
       constants.reports.pageViews),
@@ -78,7 +73,7 @@ define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], functio
     loadPageViews();
     helpers.setLoggedInData();
     $('.logout').on('click', function() {
-      logoutListener();
+      helpers.logoutListener();
     });
 
   })

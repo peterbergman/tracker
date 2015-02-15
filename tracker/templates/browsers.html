@@ -60,12 +60,19 @@
       <div class="col-sm-3 col-md-2 sidebar">
         <ul class="nav nav-sidebar">
           <li class="dropdown">
-            <a href="#" data-toggle="dropdown" class="dropdown-toggle">Select site <b class="caret"></b></a>
-            <ul class="dropdown-menu" id="sites-dropdown">
-              <!-- Placeholder for sites -->
-            </ul>
+            <div class="input-group">
+              <div class="input-group-btn">
+                <input type="text" id="site-box" class="form-control"></input>
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" id="sites-dropdown">
+                  <!-- Placeholder for sites -->
+                </ul>
+              </div>
+            </div>
           </li>
-          </ul>
+        </ul>
         <ul class="nav nav-sidebar">
           <li><a href="../page_views/">Page views</a></li>
           <li><a href="../visitors/">Visitors</a></li>

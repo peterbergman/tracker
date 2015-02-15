@@ -8,7 +8,7 @@ define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], functio
   }
 
   loadBrowsers = function() {
-    helpers.sendApiRequest(helpers.getApiReportUrl(constants.debug.accountId,
+    helpers.sendApiRequest(helpers.getApiReportUrl(helpers.getAccountId(),
       constants.debug.siteId,
       constants.debug.startDate,
       constants.debug.endDate,
@@ -75,7 +75,7 @@ define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], functio
     loadBrowsers();
     helpers.setLoggedInData();
     $('.logout').on('click', function() {
-      logoutListener();
+      helpers.logoutListener();
     });
 
   })

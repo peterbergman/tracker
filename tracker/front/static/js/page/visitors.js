@@ -1,6 +1,6 @@
 define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], function($, constants, helpers){
   loadVisitors = function() {
-    helpers.sendApiRequest(helpers.getApiReportUrl(constants.debug.accountId,
+    helpers.sendApiRequest(helpers.getApiReportUrl(helpers.getAccountId(),
       constants.debug.siteId,
       constants.debug.startDate,
       constants.debug.endDate,
@@ -35,14 +35,9 @@ define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], functio
       helpers.createLineChart('Visitors', labelsArray, dataArray);
     }
 
-    logoutListener = function() {
-      $.removeCookie('user_data', {path: '/'});
-      document.location = '/';
-    }
-
     loadVisitors();
     helpers.setLoggedInData();
     $('.logout').on('click', function() {
-      logoutListener();
+      helpers.logoutListener();
     });
   })
