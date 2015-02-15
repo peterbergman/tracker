@@ -1,5 +1,7 @@
 #!/bin/bash
 
+repo_dir = pwd
+
 git pull
 sudo rm -r /var/www/tracker/api
 sudo rm -r /var/www/tracker/datahandler
@@ -14,6 +16,7 @@ sudo django-admin startapp datahandler
 sudo django-admin startapp helper
 sudo django-admin startapp front
 
+cd repo_dir
 
 sudo cp -r api /var/www/tracker
 sudo cp -r datahandler /var/www/tracker
