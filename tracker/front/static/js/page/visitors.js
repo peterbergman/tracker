@@ -1,7 +1,7 @@
 define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], function($, constants, helpers){
   loadVisitors = function() {
     helpers.sendApiRequest(helpers.getApiReportUrl(helpers.getAccountId(),
-      constants.debug.siteId,
+      helpers.getSelectedSite(),
       constants.debug.startDate,
       constants.debug.endDate,
       constants.reports.visitors),
