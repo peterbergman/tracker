@@ -6,6 +6,7 @@ from bson.json_util import dumps
 import jsonpickle
 import json
 import base64
+import sys
 from helper import aggregation
 
 def get_account(request, value):
@@ -19,8 +20,14 @@ def get_account(request, value):
         response = HttpResponse(content_type='application/json', status=403)
     else:
         auth_string = str(base64.b64decode(auth_header))
-        username = auth_string.split(':')[0]
-        password = auth_string.split(':')[1]
+
+        if sys.version_info < (3, 0, 0): # dirty solution to determine how to parse the incomming auth header
+            username = auth_string.split(':')[0]
+            password = auth_string.split(':')[1]
+        else:
+            username = auth_string.split(':')[0][2:]
+            password = auth_string.split(':')[1][:-1]
+
         result = settings.DB.account.find({key : username, 'password': password}, {'password': False, '_id': False});
         if result.count() == 0:
             response = HttpResponse(content_type='application/json', status=404)
