@@ -54,6 +54,12 @@ def page_views(account_id, site_id, start_date, end_date):
             '$sum': 1 # make a sum for all dates grouped on date which will be the total number of hits for that date
           }
         }
+      },
+      {
+        '$sort':
+        {
+            '_id' : 1
+        }
       }
     ])
 
@@ -105,6 +111,12 @@ def visitors(account_id, site_id, start_date, end_date):
           {
             '$sum': 1 # for each group, sum all the visitor_id values in that group which is the visitor count for that date
           }
+        }
+      },
+      {
+        '$sort':
+        {
+            '_id' : 1
         }
       }
     ])
@@ -176,6 +188,12 @@ def browsers(account_id, site_id, start_date, end_date):
               'total': '$total'
             }
           }
+        }
+      },
+      {
+        '$sort':
+        {
+            '_id' : 1
         }
       }
     ])
