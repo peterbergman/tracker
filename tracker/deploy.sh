@@ -3,6 +3,7 @@
 REPO_DIR=`pwd`
 
 git reset --hard
+git pull
 
 sudo chmod 777 deploy.sh
 
