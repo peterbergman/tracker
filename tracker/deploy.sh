@@ -2,9 +2,11 @@
 
 REPO_DIR=`pwd`
 
+git stash
+git pull
+
 sudo chmod 777 deploy.sh
 
-git pull
 sudo rm -r /var/www/tracker/api
 sudo rm -r /var/www/tracker/datahandler
 sudo rm -r /var/www/tracker/helper
