@@ -4,10 +4,25 @@ define(['jquery', 'chartjs', 'constants', 'jquery_cookie'], function($, Chart, c
     getChartCtx: function() {
       return $(constants.chartId).get(0).getContext('2d');
     },
-    getApiAccountUrl: function(protocol, host, port, accountId) {
+    getEnvironment: function() {
+      if (document.location.host.match('localhost')) {
+        return 'development';
+      } else {
+        return 'production';
+      }
+    },
+    getApiAccountUrl: function(accountId) {
+      var env = helpers.getEnvironment();
+      var host = (env == 'production' ? constants.api.production.host : constants.api.development.host);
+      var port = (env == 'production' ? constants.api.production.port : constants.api.development.port);
+      var protocol = (env == 'production' ? constants.api.production.protocol : constants.api.development.protocol);
       return protocol + '://' + host + ':' + port + '/api/accounts/' + accountId;
     },
-    getApiReportUrl: function(protocol, host, port, accountId, siteId, startDate, endDate, report) {
+    getApiReportUrl: function(accountId, siteId, startDate, endDate, report) {
+      var env = helpers.getEnvironment();
+      var host = (env == 'production' ? constants.api.production.host : constants.api.development.host);
+      var port = (env == 'production' ? constants.api.production.port : constants.api.development.port);
+      var protocol = (env == 'production' ? constants.api.production.protocol : constants.api.development.protocol);
       return protocol + '://' + host + ':' + port + '/api/accounts/' + accountId + '/sites/' + siteId + '/start_date/' + startDate + '/end_date/' + endDate + '/' + report;
     },
     sendApiRequest: function(url, requestMethod, headers, callback) {

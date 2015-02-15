@@ -4,8 +4,7 @@ define(['jquery', 'jquery_cookie', 'bootstrap', 'constants', 'helpers', 'base64'
     event.preventDefault();
     var username = $('#inputEmail').first().val();
     var password = $('#inputPassword').first().val();
-    helpers.sendApiRequest(helpers.getApiAccountUrl(constants.api.protocol,
-      constants.api.host, constants.api.port, username),
+    helpers.sendApiRequest(helpers.getApiAccountUrl(username),
       'GET', {
         'Authorization': Base64.encode(username + ':' + password)
       },
