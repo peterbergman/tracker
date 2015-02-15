@@ -32,7 +32,7 @@ define([],function(){
       accountId: 'edbdf639f813482c986e2c4a536ec3fb',
       siteId: '627ebf16104240b28c8f2e25ed436655',
       startDate: '2015-02-01',
-      endDate: '2015-02-15'
+      endDate: '2015-02-20'
     }
   }
   return constants;
