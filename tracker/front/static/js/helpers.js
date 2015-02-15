@@ -1,6 +1,35 @@
 define(['jquery', 'chartjs', 'constants', 'jquery_cookie'], function($, Chart, constants){
   $.cookie.json = true;
   var helpers = {
+    getAccountId: function() {
+      var userData = $.cookie('user_data');
+      if (typeof userData != 'undefined') {
+        return userData.account_id;
+      }
+    },
+    getEmail: function() {
+      var userData = $.cookie('user_data');
+      if (typeof userData != 'undefined') {
+        return userData.email;
+      }
+    },
+    getSites: function() {
+      var userData = $.cookie('user_data');
+      if (typeof userData != 'undefined') {
+        return userData.sites;
+      }
+    },
+    setSelectedSite: function(site) {
+      var userData = $.cookie('user_data');
+      userData.selected_site = site;
+      $.cookie('user_data', userData);
+    },
+    getSelectedSite: function() {
+      var userData = $.cookie('user_data');
+      if (typeof userData != 'undefined') {
+        return userData.selected_site;
+      }
+    },
     getChartCtx: function() {
       return $(constants.chartId).get(0).getContext('2d');
     },
@@ -63,19 +92,32 @@ define(['jquery', 'chartjs', 'constants', 'jquery_cookie'], function($, Chart, c
       $('#chart-legend').html(legend);
     },
     setLoggedInData: function() {
-      var userData = $.cookie('user_data')
-      helpers.setEmail(userData.email);
-      helpers.setSites(userData.sites);
+      helpers.setEmail(helpers.getEmail());
+      helpers.setSites(helpers.getSites());
     },
     setEmail: function(email) {
       $('#email-dropdown').first().html(email + ' <b class="caret"></b>');
     },
+    logoutListener: function() {
+      $.removeCookie('user_data', {path: '/'});
+      document.location = '/';
+    },
     setSites: function(sites) {
       var siteDropdown = $('#sites-dropdown').first();
       for (var index in sites) {
-        siteDropdown.append('<li><a href="#">' + sites[index].site_name + '</a></li>');
+        siteDropdown.append('<li id="'+ sites[index].site_id +'"><a href="#">' + sites[index].site_name + '</a></li>');
+        $('#sites-dropdown li').eq(index).on('click', function(){
+          var site_name = $(this).text();
+          var site_id = $(this).attr('id');
+          $('#site-box').val(site_name);
+          helpers.setSelectedSite(site_id);
+        });
       }
       siteDropdown.append('<li class="divider"></li><li><a href="#">Create new site</a></li>');
+      if (typeof sites[0] != 'undefined') {
+        $('#site-box').val(sites[0].site_name);
+        helpers.setSelectedSite(sites[0].site_id);
+      }
     }
   }
   return helpers;
