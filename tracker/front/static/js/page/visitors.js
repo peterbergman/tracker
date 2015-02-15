@@ -35,9 +35,10 @@ define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], functio
       helpers.createLineChart('Visitors', labelsArray, dataArray);
     }
 
-    loadVisitors();
     helpers.setLoggedInData();
     $('.logout').on('click', function() {
       helpers.logoutListener();
     });
+
+    loadVisitors();
   })

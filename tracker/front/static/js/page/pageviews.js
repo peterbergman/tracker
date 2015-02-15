@@ -70,10 +70,10 @@ define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], functio
       return urls;
     }
 
-    loadPageViews();
     helpers.setLoggedInData();
     $('.logout').on('click', function() {
       helpers.logoutListener();
     });
 
+    loadPageViews();
   })

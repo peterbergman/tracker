@@ -72,10 +72,10 @@ define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], functio
       helpers.createPieChart('Browsers', dataArray);
     }
 
-    loadBrowsers();
     helpers.setLoggedInData();
     $('.logout').on('click', function() {
       helpers.logoutListener();
     });
 
+    loadBrowsers();
   })
