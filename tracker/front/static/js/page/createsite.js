@@ -1,6 +1,6 @@
 define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], function($, constants, helpers){
 
-  createSiteListener = function() {
+  createSiteListener = function(event) {
     event.preventDefault();
     var authHeader = helpers.getAuth();
     var accountId = helpers.getAccountId();
@@ -25,8 +25,8 @@ define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], functio
 
   helpers.setEmail(helpers.getEmail());
 
-  $('#site-name').on('click', function() {
-    createSiteListener();
+  $('#create-site').on('click', function(event) {
+    createSiteListener(event);
   });
 
   $('.logout').on('click', function() {
