@@ -80,9 +80,7 @@ def update_account(request, value):
             site = Site(site_name)
             sites.append(site)
             json_str = jsonpickle.encode(account, unpicklable=False)
-            print(json.loads(json_str))
             settings.DB.account.update({'account_id' : account['account_id']}, json.loads(json_str))
-
     return response
 
 def parse_email(request):

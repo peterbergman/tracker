@@ -4,12 +4,14 @@ define(['jquery', 'jquery_cookie', 'bootstrap', 'constants', 'helpers', 'base64'
     event.preventDefault();
     var username = $('#inputEmail').first().val();
     var password = $('#inputPassword').first().val();
+    var authHeader = Base64.encode(username + ':' + password);
     helpers.sendApiRequest(helpers.getApiAccountUrl(username),
       'GET', {
-        'Authorization': Base64.encode(username + ':' + password)
+        'Authorization': authHeader
       },
       function(data, statusCode) {
         if (statusCode == 200) {
+          data.auth = authHeader;
           $.cookie('user_data', data, {path: '/'});
           document.location = 'page_views';
         } else {
