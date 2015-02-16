@@ -122,7 +122,7 @@ define(['jquery', 'chartjs', 'constants', 'jquery_cookie'], function($, Chart, c
       for (var index in sites) {
         siteDropdown.append('<li id="'+ sites[index].site_id +'"><a href="#">' + sites[index].site_name + '</a></li>');
         $('#sites-dropdown li').eq(index).on('click', function(){
-          siteListner(this);
+          helpers.siteListner(this);
         });
       }
       siteDropdown.append('<li class="divider"></li><li><a href="/create_site">Create new site</a></li>');
