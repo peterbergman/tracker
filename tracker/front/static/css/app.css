@@ -183,6 +183,10 @@ body {
 }
 
 #site-box {
-  font-size: 12px; 
+  font-size: 12px;
   width: 86%;
+}
+
+#site-tag {
+  font-family:monospace;
 }
