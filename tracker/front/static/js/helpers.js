@@ -112,8 +112,8 @@ define(['jquery', 'chartjs', 'constants', 'jquery_cookie'], function($, Chart, c
       document.location = '/';
     },
     siteListener: function(clickedSite) {
-      var site_name = $(this).text();
-      var site_id = $(this).attr('id');
+      var site_name = $(clickedSite).text();
+      var site_id = $(clickedSite).attr('id');
       $('#site-box').val(site_name);
       helpers.setSelectedSite(site_id);
     },
