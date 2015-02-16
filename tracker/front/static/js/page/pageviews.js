@@ -13,7 +13,7 @@ define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], functio
       constants.debug.startDate,
       constants.debug.endDate,
       constants.reports.pageViews),
-      'GET', {},
+      'GET', {}, {},
       function(data) {
         populateUrlPageViewTable(data);
         populatePageViewChart(data);

@@ -1,6 +1,12 @@
 define(['jquery', 'chartjs', 'constants', 'jquery_cookie'], function($, Chart, constants){
   $.cookie.json = true;
   var helpers = {
+    getAuth: function() {
+      var userData = $.cookie('user_data');
+      if (typeof userData != 'undefined') {
+        return userData.auth;
+      }
+    },
     getAccountId: function() {
       var userData = $.cookie('user_data');
       if (typeof userData != 'undefined') {
@@ -54,11 +60,12 @@ define(['jquery', 'chartjs', 'constants', 'jquery_cookie'], function($, Chart, c
       var protocol = (env == 'production' ? constants.api.production.protocol : constants.api.development.protocol);
       return protocol + '://' + host + ':' + port + '/api/accounts/' + accountId + '/sites/' + siteId + '/start_date/' + startDate + '/end_date/' + endDate + '/' + report;
     },
-    sendApiRequest: function(url, requestMethod, headers, callback) {
+    sendApiRequest: function(url, requestMethod, headers, data, callback) {
       $.ajax({
         url: url,
         method: requestMethod,
         headers: headers,
+        data: data,
       }).done(function(data, textStatus, jqXHR) {
         callback(data, jqXHR.status);
       }).always(function(jqXHROrData, textStatus, jqXHROrErrorThrown) {

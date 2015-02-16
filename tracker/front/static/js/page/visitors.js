@@ -5,7 +5,7 @@ define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], functio
       constants.debug.startDate,
       constants.debug.endDate,
       constants.reports.visitors),
-      'GET', {},
+      'GET', {}, {},
       function(data) {
         populateDateVisitorTable(data);
         populateVisitorChart(data);

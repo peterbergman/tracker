@@ -13,7 +13,7 @@ define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], functio
       constants.debug.startDate,
       constants.debug.endDate,
       constants.reports.browsers),
-      'GET', {},
+      'GET', {}, {},
       function(data) {
         var browsers = aggregateVisitorsPerBrowser(data);
         var browserArray = [];

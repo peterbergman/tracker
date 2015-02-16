@@ -8,7 +8,7 @@ define(['jquery', 'jquery_cookie', 'bootstrap', 'constants', 'helpers', 'base64'
     helpers.sendApiRequest(helpers.getApiAccountUrl(username),
       'GET', {
         'Authorization': authHeader
-      },
+      }, {},
       function(data, statusCode) {
         if (statusCode == 200) {
           data.auth = authHeader;
