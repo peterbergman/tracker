@@ -52,6 +52,11 @@ def create_account(request):
             response = HttpResponse(status=400)
     return response
 
+#def update_account(request):
+
+#def handle_account_request(request):
+
+
 def parse_email(request):
     """Parse the email from the POST request variables."""
     return request.POST.get('email')

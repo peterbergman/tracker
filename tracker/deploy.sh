@@ -12,6 +12,7 @@ sudo rm -r /var/www/tracker/datahandler
 sudo rm -r /var/www/tracker/helper
 sudo rm -r /var/www/tracker/front
 sudo rm -r /var/www/tracker/templates
+sudo rm -r /var/www/tracker/tracker/urls.py
 
 cd /var/www/tracker
 
@@ -27,5 +28,6 @@ sudo cp -r datahandler /var/www/tracker
 sudo cp -r helper /var/www/tracker
 sudo cp -r front /var/www/tracker
 sudo cp -r templates /var/www/tracker
+sudo cp tracker/urls.py /var/www/tracker
 
 sudo /etc/init.d/apache2 reload
