@@ -69,7 +69,7 @@ def update_account(request, value):
     else:
         auth_string = str(base64.b64decode(auth_header))
         password = get_password_from_auth_string(auth_string)
-        result = settings.DB.account.find({'account_id' : value, 'password': password}, {'password': False, '_id': False});
+        result = settings.DB.account.find({'account_id' : value, 'password': password});
         if result.count() == 0:
             response = HttpResponse(content_type='application/json', status=404)
         else:
@@ -81,7 +81,7 @@ def update_account(request, value):
             sites.append(site)
             json_str = jsonpickle.encode(account, unpicklable=False)
             print(json.loads(json_str))
-            #settings.DB.account.update({'account_id' : account['account_id']}, json.loads(json_str))
+            settings.DB.account.update({'account_id' : account['account_id']}, json.loads(json_str))
 
     return response
 
