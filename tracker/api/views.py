@@ -73,7 +73,7 @@ def update_account(request, value):
         if result.count() == 0:
             response = HttpResponse(content_type='application/json', status=404)
         else:
-            response = HttpResponse()
+            response = HttpResponse(content_type='application/json')
             site_name = parse_site_name(request)
             account = result[0]
             sites = account['sites']
@@ -81,6 +81,7 @@ def update_account(request, value):
             sites.append(site)
             json_str = jsonpickle.encode(account, unpicklable=False)
             settings.DB.account.update({'account_id' : account['account_id']}, json.loads(json_str))
+            response.content = json_str;
     return response
 
 def parse_email(request):

@@ -18,7 +18,7 @@ define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], functio
         data.selected_site = selectedSite;
         $.cookie('user_data', data, {path: '/'});
       } else {
-        console.log('login failed!');
+        console.log('could not create site!');
       }
     });
   }
