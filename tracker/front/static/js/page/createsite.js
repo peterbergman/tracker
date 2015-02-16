@@ -1,5 +1,21 @@
 define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], function($, constants, helpers){
 
+  populateSiteTagTextArea = function() {
+    var accountId = helpers.getAccountId();
+    var siteId = helpers.getSites()[helpers.getSites().length-1].site_id;
+    $('#site-tag').val('<script type="text/javascript">\n'+
+    '\ttracker = {accountId: \''+accountId+'\', siteId: \''+siteId+'\'};\n'+
+    '\t(function () {\n'+
+          '\tvar t = document.createElement(\'script\');\n'+
+          '\tt.type = \'text/javascript\';\n'+
+          '\tt.async = true;\n'+
+          '\tt.src = \'http://ec2-54-172-75-176.compute-1.amazonaws.com/static/js/tracker.js\';\n'+
+          '\tvar a = document.getElementsByTagName(\'script\')[0];\n'+
+          '\ta.parentNode.insertBefore(t, a);\n'+
+      '} ());\n'+
+  '</script>');
+  }
+
   createSiteListener = function(event) {
     event.preventDefault();
     var authHeader = helpers.getAuth();
@@ -17,6 +33,7 @@ define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], functio
         data.auth = authHeader;
         data.selected_site = selectedSite;
         $.cookie('user_data', data, {path: '/'});
+        populateSiteTagTextArea();
       } else {
         console.log('could not create site!');
       }
@@ -24,11 +41,9 @@ define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], functio
   }
 
   helpers.setEmail(helpers.getEmail());
-
   $('#create-site').on('click', function(event) {
     createSiteListener(event);
   });
-
   $('.logout').on('click', function() {
     helpers.logoutListener();
   });
