@@ -66,24 +66,20 @@
         <h1 class="page-header">Create new site</h1>
         <form class="form-horizontal">
           <fieldset>
-
             <div class="form-group">
-              <label class="col-md-4 control-label" for="site-name">Site name</label>
+              <label class="col-md-1 control-label" for="site-name">Site name</label>
               <div class="col-md-4">
                 <input id="site-name" name="site-name" type="text" placeholder="enter site name" class="form-control input-md" required="">
-                <span class="help-block">The name of the new site</span>
               </div>
-            </div>
-
-            <div class="form-group">
-              <label class="col-md-4 control-label" for="create-site"></label>
-              <div class="col-md-4">
+              <div class="col-md-1">
                 <button id="create-site" name="create-site" class="btn btn-primary">Create</button>
               </div>
             </div>
-
           </fieldset>
         </form>
+        <div class="col-md-11">
+          <textarea readonly class="form-control" id="site-tag" name="site-tag" rows="11"></textarea>
+        </div>
       </div>
     </div>
   </div>
