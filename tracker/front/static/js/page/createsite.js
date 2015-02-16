@@ -4,7 +4,7 @@ define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], functio
     event.preventDefault();
     var authHeader = helpers.getAuth();
     var accountId = helpers.getAccountId();
-    var selectedSite = getSelectedSite();
+    var selectedSite = helpers.getSelectedSite();
     var siteName = $('#site-name').val();
     var data = {'site_name': siteName};
     helpers.sendApiRequest(helpers.getApiAccountUrl(accountId),
