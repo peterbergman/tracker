@@ -20,7 +20,7 @@ define(['jquery', 'chartjs', 'constants', 'jquery_cookie'], function($, Chart, c
       }
     },
     setSelectedSite: function(site) {
-      var userData = $.cookie('user_data');÷
+      var userData = $.cookie('user_data');
       userData.selected_site = site;
       $.cookie('user_data', userData, {path: '/'});
     },
