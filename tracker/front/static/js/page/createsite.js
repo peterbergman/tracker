@@ -25,8 +25,12 @@ define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], functio
 
   helpers.setEmail(helpers.getEmail());
 
-  $('.logout').on('click', function() {
+  $('#site-name').on('click', function() {
     createSiteListener();
+  });
+
+  $('.logout').on('click', function() {
+    helpers.logoutListener();
   });
 
 })
