@@ -2,30 +2,30 @@ define(['jquery', 'chartjs', 'constants', 'jquery_cookie'], function($, Chart, c
   $.cookie.json = true;
   var helpers = {
     getAccountId: function() {
-      var userData = $.cookie('user_data', {path: '/'});
+      var userData = $.cookie('user_data');
       if (typeof userData != 'undefined') {
         return userData.account_id;
       }
     },
     getEmail: function() {
-      var userData = $.cookie('user_data', {path: '/'});
+      var userData = $.cookie('user_data');
       if (typeof userData != 'undefined') {
         return userData.email;
       }
     },
     getSites: function() {
-      var userData = $.cookie('user_data', {path: '/'});
+      var userData = $.cookie('user_data');
       if (typeof userData != 'undefined') {
         return userData.sites;
       }
     },
     setSelectedSite: function(site) {
-      var userData = $.cookie('user_data', {path: '/'});
+      var userData = $.cookie('user_data');
       userData.selected_site = site;
       $.cookie('user_data', userData);
     },
     getSelectedSite: function() {
-      var userData = $.cookie('user_data', {path: '/'});
+      var userData = $.cookie('user_data');
       if (typeof userData != 'undefined') {
         return userData.selected_site;
       }
