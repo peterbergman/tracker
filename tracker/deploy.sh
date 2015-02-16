@@ -28,6 +28,6 @@ sudo cp -r datahandler /var/www/tracker
 sudo cp -r helper /var/www/tracker
 sudo cp -r front /var/www/tracker
 sudo cp -r templates /var/www/tracker
-sudo cp tracker/urls.py /var/www/tracker
+sudo cp tracker/urls.py /var/www/tracker/tracker
 
 sudo /etc/init.d/apache2 reload
