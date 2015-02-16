@@ -6,14 +6,14 @@ define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], functio
     $('#site-tag').val('<script type="text/javascript">\n'+
     '\ttracker = {accountId: \''+accountId+'\', siteId: \''+siteId+'\'};\n'+
     '\t(function () {\n'+
-          '\tvar t = document.createElement(\'script\');\n'+
-          '\tt.type = \'text/javascript\';\n'+
-          '\tt.async = true;\n'+
-          '\tt.src = \'http://ec2-54-172-75-176.compute-1.amazonaws.com/static/js/tracker.js\';\n'+
-          '\tvar a = document.getElementsByTagName(\'script\')[0];\n'+
-          '\ta.parentNode.insertBefore(t, a);\n'+
-      '} ());\n'+
-  '</script>');
+    '\t\tvar t = document.createElement(\'script\');\n'+
+    '\t\tt.type = \'text/javascript\';\n'+
+    '\t\tt.async = true;\n'+
+    '\t\tt.src = \'http://ec2-54-172-75-176.compute-1.amazonaws.com/static/js/tracker.js\';\n'+
+    '\t\tvar a = document.getElementsByTagName(\'script\')[0];\n'+
+    '\t\ta.parentNode.insertBefore(t, a);\n'+
+    '\t} ());\n'+
+    '</script>');
   }
 
   createSiteListener = function(event) {
