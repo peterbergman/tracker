@@ -69,7 +69,7 @@ def update_account(request, value):
     else:
         auth_string = str(base64.b64decode(auth_header))
         password = get_password_from_auth_string(auth_string)
-        result = settings.DB.account.find({'account_id' : value, 'password': password});
+        result = settings.DB.account.find({'account_id' : value, 'password': password}, {'_id': False});
         if result.count() == 0:
             response = HttpResponse(content_type='application/json', status=404)
         else:
