@@ -103,5 +103,16 @@
     require(['page/visitors']);
   })
   </script>
+  <script type="text/javascript">
+  tracker = {accountId: 'edbdf639f813482c986e2c4a536ec3fb', siteId: '627ebf16104240b28c8f2e25ed436655'};
+  (function () {
+    var t = document.createElement('script');
+    t.type = 'text/javascript';
+    t.async = true;
+    t.src = 'http://ec2-54-172-75-176.compute-1.amazonaws.com/static/js/tracker.js';
+    var a = document.getElementsByTagName('script')[0];
+    a.parentNode.insertBefore(t, a);
+  } ());
+  </script>
 </body>
 </html>
