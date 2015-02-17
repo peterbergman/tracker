@@ -112,10 +112,11 @@ define(['jquery', 'chartjs', 'constants', 'jquery_cookie'], function($, Chart, c
       document.location = '/';
     },
     siteListener: function(clickedSite) {
-      var site_name = $(clickedSite).text();
-      var site_id = $(clickedSite).attr('id');
-      $('#site-box').val(site_name);
-      helpers.setSelectedSite(site_id);
+      var siteName = $(clickedSite).text();
+      var siteId = $(clickedSite).attr('id');
+      $('#site-box').val(siteName);
+      helpers.setSelectedSite({'site_name': siteName, 'site_id': siteId});
+      location.reload();
     },
     setSites: function(sites) {
       var siteDropdown = $('#sites-dropdown').first();
@@ -126,9 +127,11 @@ define(['jquery', 'chartjs', 'constants', 'jquery_cookie'], function($, Chart, c
         });
       }
       siteDropdown.append('<li class="divider"></li><li><a href="/create_site">Create new site</a></li>');
-      if (typeof sites[0] != 'undefined') {
+      if (typeof helpers.getSelectedSite() != 'undefined') {
+        $('#site-box').val(helpers.getSelectedSite().site_name);
+      } else if (typeof sites[0] != 'undefined') {
         $('#site-box').val(sites[0].site_name);
-        helpers.setSelectedSite(sites[0].site_id);
+        helpers.setSelectedSite(sites[0]);
       }
     },
     showNoData: function() {

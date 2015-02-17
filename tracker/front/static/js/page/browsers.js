@@ -9,7 +9,7 @@ define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], functio
 
   loadBrowsers = function() {
     helpers.sendApiRequest(helpers.getApiReportUrl(helpers.getAccountId(),
-      helpers.getSelectedSite(),
+      helpers.getSelectedSite().site_id,
       constants.debug.startDate,
       constants.debug.endDate,
       constants.reports.browsers),
