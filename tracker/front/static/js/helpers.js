@@ -136,6 +136,9 @@ define(['jquery', 'chartjs', 'constants', 'jquery_cookie'], function($, Chart, c
     },
     showNoData: function() {
       $('.row .placeholders').html('<div class="lead">No data available for the given dates... :(</div>');
+    },
+    showNoSiteSelected: function() {
+      $('.row .placeholders').html('<div class="lead">No site selected... :(</div>');
     }
   }
   return helpers;

@@ -1,6 +1,9 @@
 define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], function($, constants, helpers){
   loadVisitors = function() {
-    helpers.sendApiRequest(helpers.getApiReportUrl(helpers.getAccountId(),
+    if (typeof helpers.getSelectedSite() == 'undefined') {
+      helpers.showNoSiteSelected();
+    } else {
+      helpers.sendApiRequest(helpers.getApiReportUrl(helpers.getAccountId(),
       helpers.getSelectedSite().site_id,
       constants.debug.startDate,
       constants.debug.endDate,
@@ -16,34 +19,35 @@ define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], functio
         }
       });
     }
+  }
 
-    populateDateVisitorTable = function(data) {
-      var dateVisitorsTable = '<table class="table table-striped"><thead><tr><th>Date</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th class="right-text">Visitors</th></tr></thead><tbody>';
-      for (var dateIndex in data.sites[0].dates) {
-        dateVisitorsTable += '<tr>' + '<td>' + data.sites[0].dates[dateIndex].date + '</td>';
-        dateVisitorsTable += '<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>';
-        dateVisitorsTable += '<td class="right-text">' + data.sites[0].dates[dateIndex].data.visitors + '</td></tr>'
-      }
-      dateVisitorsTable += '</tbody></table>';
-      $('.table-responsive').html(dateVisitorsTable)
+  populateDateVisitorTable = function(data) {
+    var dateVisitorsTable = '<table class="table table-striped"><thead><tr><th>Date</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th class="right-text">Visitors</th></tr></thead><tbody>';
+    for (var dateIndex in data.sites[0].dates) {
+      dateVisitorsTable += '<tr>' + '<td>' + data.sites[0].dates[dateIndex].date + '</td>';
+      dateVisitorsTable += '<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>';
+      dateVisitorsTable += '<td class="right-text">' + data.sites[0].dates[dateIndex].data.visitors + '</td></tr>'
     }
+    dateVisitorsTable += '</tbody></table>';
+    $('.table-responsive').html(dateVisitorsTable)
+  }
 
-    populateVisitorChart = function(data) {
-      var labelsArray = [];
-      for (var index in data.sites[0].dates) {
-        labelsArray.push(data.sites[0].dates[index].date);
-      }
-      var dataArray = [];
-      for (var index in data.sites[0].dates) {
-        dataArray.push(data.sites[0].dates[index].data.visitors);
-      }
-      helpers.createLineChart('Visitors', labelsArray, dataArray);
+  populateVisitorChart = function(data) {
+    var labelsArray = [];
+    for (var index in data.sites[0].dates) {
+      labelsArray.push(data.sites[0].dates[index].date);
     }
+    var dataArray = [];
+    for (var index in data.sites[0].dates) {
+      dataArray.push(data.sites[0].dates[index].data.visitors);
+    }
+    helpers.createLineChart('Visitors', labelsArray, dataArray);
+  }
 
-    helpers.setLoggedInData();
-    $('.logout').on('click', function() {
-      helpers.logoutListener();
-    });
+  helpers.setLoggedInData();
+  $('.logout').on('click', function() {
+    helpers.logoutListener();
+  });
 
-    loadVisitors();
-  })
+  loadVisitors();
+})
