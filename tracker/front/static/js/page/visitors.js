@@ -7,8 +7,13 @@ define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], functio
       constants.reports.visitors),
       'GET', {}, {},
       function(data) {
-        populateDateVisitorTable(data);
-        populateVisitorChart(data);
+        if (data.sites[0].dates.length == 0) {
+          helpers.showNoData();
+        } else {
+          $('.report-sub-header').show();
+          populateDateVisitorTable(data);
+          populateVisitorChart(data);
+        }
       });
     }
 

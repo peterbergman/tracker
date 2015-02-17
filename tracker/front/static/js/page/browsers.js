@@ -15,17 +15,22 @@ define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], functio
       constants.reports.browsers),
       'GET', {}, {},
       function(data) {
-        var browsers = aggregateVisitorsPerBrowser(data);
-        var browserArray = [];
-        for (var browser in browsers) {
-          browserArray.push({
-            'browser': browser,
-            'visitors': browsers[browser]
-          });
+        if (data.sites[0].dates.length == 0) {
+          helpers.showNoData();
+        } else {
+          var browsers = aggregateVisitorsPerBrowser(data);
+          var browserArray = [];
+          for (var browser in browsers) {
+            browserArray.push({
+              'browser': browser,
+              'visitors': browsers[browser]
+            });
+          }
+          $('.report-sub-header').show();
+          sortBrowserArray(browserArray);
+          populateBrowserVisitorTable(browserArray);
+          populateBrowserChart(browserArray);
         }
-        sortBrowserArray(browserArray);
-        populateBrowserVisitorTable(browserArray);
-        populateBrowserChart(browserArray);
       });
     }
 

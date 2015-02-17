@@ -130,6 +130,9 @@ define(['jquery', 'chartjs', 'constants', 'jquery_cookie'], function($, Chart, c
         $('#site-box').val(sites[0].site_name);
         helpers.setSelectedSite(sites[0].site_id);
       }
+    },
+    showNoData: function() {
+      $('.row .placeholders').html('<div class="lead">No data available for the given dates... :(</div>');
     }
   }
   return helpers;
