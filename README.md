@@ -1,6 +1,6 @@
 # webprog
 
-My own version of a web analytics platform, developed during a course in backend web programming as a project. 
+My own version of a web analytics platform, developed during a course in backend web programming.
 
 Project includes:
   - A datahandler that stores event data in MongoDB.
