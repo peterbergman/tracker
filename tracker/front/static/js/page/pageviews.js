@@ -5,6 +5,9 @@ define(['jquery', 'appData', 'helpers', 'jquery_cookie', 'bootstrap', 'datepicke
     weekStart: 1
   });
 
+  $('[name=start]').datepicker('update', helpers.getDate(-3));
+  $('[name=end]').datepicker('update', helpers.getDate(3));
+
   $('[name="start"]').on('changeDate', function(event){
     helpers.dateListener(event, 'startDate', loadPageViews);
   });
@@ -98,5 +101,5 @@ define(['jquery', 'appData', 'helpers', 'jquery_cookie', 'bootstrap', 'datepicke
     helpers.logoutListener();
   });
 
-  loadPageViews('2015-02-01', '2015-02-20');
+  loadPageViews(helpers.getDate(-3), helpers.getDate(3));
 })

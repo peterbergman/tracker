@@ -81,6 +81,9 @@ define(['jquery', 'chartjs', 'appData', 'jquery_cookie'], function($, Chart, app
       var dateString = date.toLocaleTimeString('sv', options);
       return dateString.substring(0, dateString.indexOf(' '));
     },
+    getDate: function(offset) {
+      return helpers.parseDate(new Date(new Date().getTime() + (3600 * 1000 * 24 * offset)));
+    },
     sendApiRequest: function(url, requestMethod, headers, data, callback) {
       $.ajax({
         url: url,
