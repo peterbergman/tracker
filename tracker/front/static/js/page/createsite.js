@@ -1,4 +1,4 @@
-define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], function($, constants, helpers){
+define(['jquery', 'appData', 'helpers', 'jquery_cookie', 'bootstrap'], function($, appData, helpers){
 
   populateSiteTagTextArea = function() {
     var accountId = helpers.getAccountId();

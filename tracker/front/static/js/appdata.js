@@ -1,5 +1,5 @@
 define([],function(){
-  var constants = {
+  var appData = {
     dateChangeTimeStamp: 0,
     chartId: '#chart',
     date : {
@@ -39,5 +39,5 @@ define([],function(){
       endDate: '2015-02-20'
     }
   }
-  return constants;
+  return appData;
 })

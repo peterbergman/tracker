@@ -1,4 +1,4 @@
-define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap', 'datepicker'], function($, constants, helpers){
+define(['jquery', 'appData', 'helpers', 'jquery_cookie', 'bootstrap', 'datepicker'], function($, appData, helpers){
 
   $('.input-daterange').datepicker({
     format: "yyyy-mm-dd",
@@ -15,14 +15,14 @@ define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap', 'datepic
 
   dateListener = function(event, type) {
     var date = parseDate(event.date);
-    if (constants.date[type] != date) {
-      constants.date[type] = date;
+    if (appData.date[type] != date) {
+      appData.date[type] = date;
     }
-    if (typeof constants.date.startDate != 'undefined'
-    && typeof constants.date.endDate != 'undefined'
-    && event.timeStamp - constants.date.dateChangeTimeStamp > 100) {
-      constants.date.dateChangeTimeStamp = event.timeStamp;
-      loadPageViews(constants.date.startDate, constants.date.endDate);
+    if (typeof appData.date.startDate != 'undefined'
+    && typeof appData.date.endDate != 'undefined'
+    && event.timeStamp - appData.date.dateChangeTimeStamp > 100) {
+      appData.date.dateChangeTimeStamp = event.timeStamp;
+      loadPageViews(appData.date.startDate, appData.date.endDate);
     }
   }
 
@@ -51,7 +51,7 @@ define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap', 'datepic
       helpers.getSelectedSite().site_id,
       startDate,
       endDate,
-      constants.reports.pageViews),
+      appData.reports.pageViews),
       'GET', {}, {},
       function(data) {
         if (data.sites[0].dates.length == 0) {

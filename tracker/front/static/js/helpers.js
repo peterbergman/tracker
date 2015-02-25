@@ -1,4 +1,4 @@
-define(['jquery', 'chartjs', 'constants', 'jquery_cookie'], function($, Chart, constants){
+define(['jquery', 'chartjs', 'appData', 'jquery_cookie'], function($, Chart, appData){
   $.cookie.json = true;
   var helpers = {
     getAuth: function() {
@@ -37,7 +37,7 @@ define(['jquery', 'chartjs', 'constants', 'jquery_cookie'], function($, Chart, c
       }
     },
     getChartCtx: function() {
-      return $(constants.chartId).get(0).getContext('2d');
+      return $(appData.chartId).get(0).getContext('2d');
     },
     getEnvironment: function() {
       if (document.location.host.match('localhost')) {
@@ -48,16 +48,16 @@ define(['jquery', 'chartjs', 'constants', 'jquery_cookie'], function($, Chart, c
     },
     getApiAccountUrl: function(accountId) {
       var env = helpers.getEnvironment();
-      var host = (env == 'production' ? constants.api.production.host : constants.api.development.host);
-      var port = (env == 'production' ? constants.api.production.port : constants.api.development.port);
-      var protocol = (env == 'production' ? constants.api.production.protocol : constants.api.development.protocol);
+      var host = (env == 'production' ? appData.api.production.host : appData.api.development.host);
+      var port = (env == 'production' ? appData.api.production.port : appData.api.development.port);
+      var protocol = (env == 'production' ? appData.api.production.protocol : appData.api.development.protocol);
       return protocol + '://' + host + ':' + port + '/api/accounts/' + accountId;
     },
     getApiReportUrl: function(accountId, siteId, startDate, endDate, report) {
       var env = helpers.getEnvironment();
-      var host = (env == 'production' ? constants.api.production.host : constants.api.development.host);
-      var port = (env == 'production' ? constants.api.production.port : constants.api.development.port);
-      var protocol = (env == 'production' ? constants.api.production.protocol : constants.api.development.protocol);
+      var host = (env == 'production' ? appData.api.production.host : appData.api.development.host);
+      var port = (env == 'production' ? appData.api.production.port : appData.api.development.port);
+      var protocol = (env == 'production' ? appData.api.production.protocol : appData.api.development.protocol);
       return protocol + '://' + host + ':' + port + '/api/accounts/' + accountId + '/sites/' + siteId + '/start_date/' + startDate + '/end_date/' + endDate + '/' + report;
     },
     sendApiRequest: function(url, requestMethod, headers, data, callback) {
@@ -75,8 +75,8 @@ define(['jquery', 'chartjs', 'constants', 'jquery_cookie'], function($, Chart, c
       });
     },
     createLineChart: function(chartLabel, labelsArray, dataArray) {
-      if (typeof constants.chart != 'undefined') {
-        constants.chart.destroy();
+      if (typeof appData.chart != 'undefined') {
+        appData.chart.destroy();
       }
       var data = {
         labels: labelsArray,
@@ -91,17 +91,17 @@ define(['jquery', 'chartjs', 'constants', 'jquery_cookie'], function($, Chart, c
           data: dataArray
         }]
       };
-      constants.chart = new Chart(helpers.getChartCtx()).Line(data, {});
+      appData.chart = new Chart(helpers.getChartCtx()).Line(data, {});
     },
     createPieChart: function(charLabel, dataArray) {
-      if (typeof constants.chart != 'undefined') {
-        constants.chart.destroy();
+      if (typeof appData.chart != 'undefined') {
+        appData.chart.destroy();
       }
-      constants.chart = new Chart(helpers.getChartCtx()).Pie(dataArray, {
+      appData.chart = new Chart(helpers.getChartCtx()).Pie(dataArray, {
         showTooltips: false,
         legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li style=\"list-style: square; font-size: 16px; color: <%=segments[i].fillColor%>; content: *; font-size: 1.7em; margin-left: -19px; padding-right: 0.25em; position: relative;\"><%if(segments[i].label){%><span style=\"color: #333; font-size: 9px\"><%=segments[i].label%></span><%}%></li><%}%></ul>"
       });
-      var legend = constants.chart.generateLegend();
+      var legend = appData.chart.generateLegend();
       $('#chart-legend').html(legend);
     },
     setLoggedInData: function() {

@@ -1,4 +1,4 @@
-define(['jquery', 'jquery_cookie', 'bootstrap', 'constants', 'helpers', 'base64'], function($, cookie, bootstrap, constants, helpers, Base64){
+define(['jquery', 'jquery_cookie', 'bootstrap', 'appData', 'helpers', 'base64'], function($, cookie, bootstrap, appData, helpers, Base64){
 
   loginListener = function(event) {
     event.preventDefault();

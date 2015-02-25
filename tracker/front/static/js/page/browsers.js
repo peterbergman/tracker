@@ -1,4 +1,4 @@
-define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], function($, constants, helpers){
+define(['jquery', 'appData', 'helpers', 'jquery_cookie', 'bootstrap'], function($, appData, helpers){
 
   sortBrowserArray = function(browserArray) {
     browserArray.sort(function(a, b) {
@@ -13,9 +13,9 @@ define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], functio
     } else {
       helpers.sendApiRequest(helpers.getApiReportUrl(helpers.getAccountId(),
       helpers.getSelectedSite().site_id,
-      constants.debug.startDate,
-      constants.debug.endDate,
-      constants.reports.browsers),
+      appData.debug.startDate,
+      appData.debug.endDate,
+      appData.reports.browsers),
       'GET', {}, {},
       function(data) {
         if (data.sites[0].dates.length == 0) {
@@ -73,8 +73,8 @@ define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], functio
     for (var i = 0; i < browserCount; i++) {
       dataArray.push({
         value: data[i].visitors,
-        color: constants.chartColors[i].color,
-        highlight: constants.chartColors[i].highLight,
+        color: appData.chartColors[i].color,
+        highlight: appData.chartColors[i].highLight,
         label: data[i].browser
       })
     }

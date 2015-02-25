@@ -1,13 +1,13 @@
-define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], function($, constants, helpers){
+define(['jquery', 'appData', 'helpers', 'jquery_cookie', 'bootstrap'], function($, appData, helpers){
   loadVisitors = function() {
     if (typeof helpers.getSelectedSite() == 'undefined') {
       helpers.showNoSiteSelected();
     } else {
       helpers.sendApiRequest(helpers.getApiReportUrl(helpers.getAccountId(),
       helpers.getSelectedSite().site_id,
-      constants.debug.startDate,
-      constants.debug.endDate,
-      constants.reports.visitors),
+      appData.debug.startDate,
+      appData.debug.endDate,
+      appData.reports.visitors),
       'GET', {}, {},
       function(data) {
         if (data.sites[0].dates.length == 0) {
