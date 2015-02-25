@@ -11,23 +11,18 @@ from django.http import QueryDict
 from helper import aggregation
 
 def get_account(request, value):
-    print('get_account')
-    print('value:' + value)
     """Fetch and existing account from the database."""
     if '@' not in value:
         key = 'account_id'
     else:
         key = 'email'
-    auth_header = get_auth_header(request)
+    auth_header = parse_auth_header(request)
     if auth_header == None:
         response = HttpResponse(content_type='application/json', status=403)
     else:
         auth_string = str(base64.b64decode(auth_header))
-        username = get_username_from_auth_string(auth_string)
-        password = get_password_from_auth_string(auth_string)
-        print('username: ' + username)
-        print('password: ' + password)
-        print('key: ' + key)
+        username = parse_username_from_auth_string(auth_string)
+        password = parse_password_from_auth_string(auth_string)
         result = settings.DB.account.find({key : username, 'password': password}, {'password': False, '_id': False});
         if result.count() == 0:
             response = HttpResponse(content_type='application/json', status=404)
@@ -60,15 +55,13 @@ def create_account(request):
     return response
 
 def update_account(request, value):
-    print('update_account')
-    print('value:' + value)
     """Update an existing account in the database."""
-    auth_header = get_auth_header(request)
+    auth_header = parse_auth_header(request)
     if auth_header == None:
         response = HttpResponse(content_type='application/json', status=403)
     else:
         auth_string = str(base64.b64decode(auth_header))
-        password = get_password_from_auth_string(auth_string)
+        password = parse_password_from_auth_string(auth_string)
         result = settings.DB.account.find({'account_id' : value, 'password': password}, {'_id': False});
         if result.count() == 0:
             response = HttpResponse(content_type='application/json', status=404)
@@ -109,23 +102,24 @@ def parse_site_name(request):
         variables = QueryDict(request.body)
         return variables.get('site_name')
 
-def get_auth_header(request):
+def parse_auth_header(request):
+    """Parse the auth header from the request meta data."""
     return request.META.get('HTTP_AUTHORIZATION')
 
-def get_username_from_auth_string(auth_string):
+def parse_username_from_auth_string(auth_string):
+    """Parse the username from the auth header string."""
     return split_auth_string(auth_string)[0]
 
-def get_password_from_auth_string(auth_string):
+def parse_password_from_auth_string(auth_string):
+    """Parse the password from the auth header string."""
     return split_auth_string(auth_string)[1]
 
 def split_auth_string(auth_string):
+    """Split the auth header string by using : as delimeter."""
     if sys.version_info < (3, 0, 0):
         return auth_string.split(':')
     else:
         return auth_string[2:-1].split(':')
-
-def site(request, account_id, site_id, start_date, end_date):
-    return HttpResponse('{}', content_type='application/json')
 
 def page_views(request, account_id, site_id, start_date, end_date):
     """Fetch number of page views per page from a site within the given interval of dates."""
