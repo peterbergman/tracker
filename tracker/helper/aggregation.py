@@ -9,7 +9,7 @@ def page_views(account_id, site_id, start_date, end_date):
           'time':
           {
             '$gte': datetime.strptime(start_date, '%Y-%m-%d'),
-            '$lt':  datetime.strptime(end_date, '%Y-%m-%d')
+            '$lte':  datetime.strptime(end_date, '%Y-%m-%d')
           },
           'account_id': account_id,
           'site_id': site_id
@@ -78,7 +78,7 @@ def visitors(account_id, site_id, start_date, end_date):
           'time':
           {
             '$gte': datetime.strptime(start_date, '%Y-%m-%d'),
-            '$lt':  datetime.strptime(end_date, '%Y-%m-%d')
+            '$lte':  datetime.strptime(end_date, '%Y-%m-%d')
           },
           'account_id': account_id,
           'site_id': site_id
@@ -138,7 +138,7 @@ def browsers(account_id, site_id, start_date, end_date):
           'time':
           {
             '$gte': datetime.strptime(start_date, '%Y-%m-%d'),
-            '$lt':  datetime.strptime(end_date, '%Y-%m-%d')
+            '$lte':  datetime.strptime(end_date, '%Y-%m-%d')
           },
           'account_id': account_id,
           'site_id': site_id
