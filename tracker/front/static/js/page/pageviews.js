@@ -1,4 +1,40 @@
-define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], function($, constants, helpers){
+define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap', 'datepicker'], function($, constants, helpers){
+
+  $('.input-daterange').datepicker({
+    format: "yyyy-mm-dd",
+    weekStart: 1
+  });
+
+  $('[name="start"]').on('changeDate', function(event){
+    dateListener(event, 'startDate');
+  });
+
+  $('[name="end"]').on('changeDate', function(event){
+    dateListener(event, 'endDate');
+  });
+
+  dateListener = function(event, type) {
+    var date = parseDate(event.date);
+    if (constants.date[type] != date) {
+      constants.date[type] = date;
+    }
+    if (typeof constants.date.startDate != 'undefined'
+    && typeof constants.date.endDate != 'undefined'
+    && event.timeStamp - constants.date.dateChangeTimeStamp > 100) {
+      constants.date.dateChangeTimeStamp = event.timeStamp;
+      loadPageViews(constants.date.startDate, constants.date.endDate);
+    }
+  }
+
+  parseDate = function(date) {
+    var options = {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric'
+    };
+    var dateString = date.toLocaleTimeString('sv', options);
+    return dateString.substring(0, dateString.indexOf(' '));
+  }
 
   sortUrlArray = function(urlArray) {
     urlArray.sort(function(a, b) {
@@ -7,14 +43,14 @@ define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], functio
     return urlArray;
   }
 
-  loadPageViews = function() {
+  loadPageViews = function(startDate, endDate) {
     if (typeof helpers.getSelectedSite() == 'undefined') {
       helpers.showNoSiteSelected();
     } else {
       helpers.sendApiRequest(helpers.getApiReportUrl(helpers.getAccountId(),
       helpers.getSelectedSite().site_id,
-      constants.debug.startDate,
-      constants.debug.endDate,
+      startDate,
+      endDate,
       constants.reports.pageViews),
       'GET', {}, {},
       function(data) {
@@ -30,6 +66,7 @@ define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], functio
   }
 
   populateUrlPageViewTable = function(data) {
+    $('.table-responsive').html('');
     var urls = aggregatePageViewsPerUrl(data);
     var urlArray = [];
     for (var url in urls) {
@@ -84,5 +121,5 @@ define(['jquery', 'constants', 'helpers', 'jquery_cookie', 'bootstrap'], functio
     helpers.logoutListener();
   });
 
-  loadPageViews();
+  loadPageViews('2015-02-01', '2015-02-20');
 })
