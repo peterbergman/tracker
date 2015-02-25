@@ -1,6 +1,10 @@
 define([],function(){
   var constants = {
+    dateChangeTimeStamp: 0,
     chartId: '#chart',
+    date : {
+      dateChangeTimeStamp: 0
+    },
     api: {
       development: {
         host: 'localhost',
