@@ -194,3 +194,7 @@ body {
   font-family:monospace;
   cursor: auto;
 }
+
+.date-picker-box {
+  width: 300px;
+}
