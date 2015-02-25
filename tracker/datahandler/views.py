@@ -20,7 +20,6 @@ def handle_get(request, account_id, site_id):
     visitor_id = parse_visitor_id(request)
     page_url = parse_page_url(request)
     user_agent = parse_user_agent(request)
-    time = parse_time(request)
     event = Event(account_id=account_id, site_id=site_id, visitor_id=visitor_id, page_url=page_url, user_agent=user_agent)
     settings.DB.event.insert(event.__dict__, w=0)
 
@@ -50,14 +49,6 @@ def parse_user_agent(request):
     if user_agent == None:
         user_agent = 'None'
     return user_agent
-
-def parse_time(request):
-    time_param = request.GET.get('time')
-    if time_param == None:
-        time = datetime.datetime.now()
-    else:
-        time = datetime.datetime.fromtimestamp(float(time_param))
-    return time
 
 def create_response(visitor_id):
     """Create the HttpResponse that sets the visitor_id cookie when sent back to the client."""
