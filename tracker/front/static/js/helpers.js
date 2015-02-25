@@ -60,6 +60,27 @@ define(['jquery', 'chartjs', 'appData', 'jquery_cookie'], function($, Chart, app
       var protocol = (env == 'production' ? appData.api.production.protocol : appData.api.development.protocol);
       return protocol + '://' + host + ':' + port + '/api/accounts/' + accountId + '/sites/' + siteId + '/start_date/' + startDate + '/end_date/' + endDate + '/' + report;
     },
+    dateListener: function(event, type, callback) {
+      var date = helpers.parseDate(event.date);
+      if (appData.date[type] != date) {
+        appData.date[type] = date;
+      }
+      if (typeof appData.date.startDate != 'undefined'
+      && typeof appData.date.endDate != 'undefined'
+      && event.timeStamp - appData.date.dateChangeTimeStamp > 100) {
+        appData.date.dateChangeTimeStamp = event.timeStamp;
+        callback(appData.date.startDate, appData.date.endDate);
+      }
+    },
+    parseDate: function(date) {
+      var options = {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric'
+      };
+      var dateString = date.toLocaleTimeString('sv', options);
+      return dateString.substring(0, dateString.indexOf(' '));
+    },
     sendApiRequest: function(url, requestMethod, headers, data, callback) {
       $.ajax({
         url: url,

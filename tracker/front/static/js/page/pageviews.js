@@ -6,35 +6,12 @@ define(['jquery', 'appData', 'helpers', 'jquery_cookie', 'bootstrap', 'datepicke
   });
 
   $('[name="start"]').on('changeDate', function(event){
-    dateListener(event, 'startDate');
+    helpers.dateListener(event, 'startDate', loadPageViews);
   });
 
   $('[name="end"]').on('changeDate', function(event){
-    dateListener(event, 'endDate');
+    helpers.dateListener(event, 'endDate', loadPageViews);
   });
-
-  dateListener = function(event, type) {
-    var date = parseDate(event.date);
-    if (appData.date[type] != date) {
-      appData.date[type] = date;
-    }
-    if (typeof appData.date.startDate != 'undefined'
-    && typeof appData.date.endDate != 'undefined'
-    && event.timeStamp - appData.date.dateChangeTimeStamp > 100) {
-      appData.date.dateChangeTimeStamp = event.timeStamp;
-      loadPageViews(appData.date.startDate, appData.date.endDate);
-    }
-  }
-
-  parseDate = function(date) {
-    var options = {
-      year: 'numeric',
-      month: 'numeric',
-      day: 'numeric'
-    };
-    var dateString = date.toLocaleTimeString('sv', options);
-    return dateString.substring(0, dateString.indexOf(' '));
-  }
 
   sortUrlArray = function(urlArray) {
     urlArray.sort(function(a, b) {
