@@ -1,12 +1,26 @@
-define(['jquery', 'appData', 'helpers', 'jquery_cookie', 'bootstrap'], function($, appData, helpers){
-  loadVisitors = function() {
+define(['jquery', 'appData', 'helpers', 'jquery_cookie', 'bootstrap', 'datepicker'], function($, appData, helpers){
+
+  $('.input-daterange').datepicker({
+    format: "yyyy-mm-dd",
+    weekStart: 1
+  });
+
+  $('[name="start"]').on('changeDate', function(event){
+    helpers.dateListener(event, 'startDate', loadVisitors);
+  });
+
+  $('[name="end"]').on('changeDate', function(event){
+    helpers.dateListener(event, 'endDate', loadVisitors);
+  });
+
+  loadVisitors = function(startDate, endDate) {
     if (typeof helpers.getSelectedSite() == 'undefined') {
       helpers.showNoSiteSelected();
     } else {
       helpers.sendApiRequest(helpers.getApiReportUrl(helpers.getAccountId(),
       helpers.getSelectedSite().site_id,
-      appData.debug.startDate,
-      appData.debug.endDate,
+      startDate,
+      endDate,
       appData.reports.visitors),
       'GET', {}, {},
       function(data) {
@@ -22,6 +36,7 @@ define(['jquery', 'appData', 'helpers', 'jquery_cookie', 'bootstrap'], function(
   }
 
   populateDateVisitorTable = function(data) {
+    $('.table-responsive').html('');
     var dateVisitorsTable = '<table class="table table-striped"><thead><tr><th>Date</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th class="right-text">Visitors</th></tr></thead><tbody>';
     for (var dateIndex in data.sites[0].dates) {
       dateVisitorsTable += '<tr>' + '<td>' + data.sites[0].dates[dateIndex].date + '</td>';
@@ -49,5 +64,5 @@ define(['jquery', 'appData', 'helpers', 'jquery_cookie', 'bootstrap'], function(
     helpers.logoutListener();
   });
 
-  loadVisitors();
+  loadVisitors('2015-02-01', '2015-02-20');
 })
