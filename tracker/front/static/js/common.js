@@ -13,7 +13,7 @@ requirejs.config({
     bootstrap: 'lib/bootstrap',
     jquery_cookie: 'lib/jquery.cookie',
     chartjs: 'lib/chart',
-    appData: 'appData',
+    appData: 'appdata',
     helpers: 'helpers',
     base64: 'lib/base64',
     datepicker: 'lib/bootstrap-datepicker'
