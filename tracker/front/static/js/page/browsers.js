@@ -1,4 +1,17 @@
-define(['jquery', 'appData', 'helpers', 'jquery_cookie', 'bootstrap'], function($, appData, helpers){
+define(['jquery', 'appData', 'helpers', 'jquery_cookie', 'bootstrap', 'datepicker'], function($, appData, helpers){
+
+  $('.input-daterange').datepicker({
+    format: "yyyy-mm-dd",
+    weekStart: 1
+  });
+
+  $('[name="start"]').on('changeDate', function(event){
+    helpers.dateListener(event, 'startDate', loadBrowsers);
+  });
+
+  $('[name="end"]').on('changeDate', function(event){
+    helpers.dateListener(event, 'endDate', loadBrowsers);
+  });
 
   sortBrowserArray = function(browserArray) {
     browserArray.sort(function(a, b) {
@@ -7,14 +20,14 @@ define(['jquery', 'appData', 'helpers', 'jquery_cookie', 'bootstrap'], function(
     return browserArray;
   }
 
-  loadBrowsers = function() {
+  loadBrowsers = function(startDate, endDate) {
     if (typeof helpers.getSelectedSite() == 'undefined') {
       helpers.showNoSiteSelected();
     } else {
       helpers.sendApiRequest(helpers.getApiReportUrl(helpers.getAccountId(),
       helpers.getSelectedSite().site_id,
-      appData.debug.startDate,
-      appData.debug.endDate,
+      startDate,
+      endDate,
       appData.reports.browsers),
       'GET', {}, {},
       function(data) {
@@ -57,6 +70,7 @@ define(['jquery', 'appData', 'helpers', 'jquery_cookie', 'bootstrap'], function(
   }
 
   populateBrowserVisitorTable = function(data) {
+    $('.table-responsive').html('');
     var browserVisitorsTable = '<table class="table table-striped"><thead><tr><th>Browser</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th class="right-text">Visitors</th></tr></thead><tbody>';
     for (var index in data) {
       browserVisitorsTable += '<tr>' + '<td>' + data[index].browser + '</td>';
@@ -86,5 +100,5 @@ define(['jquery', 'appData', 'helpers', 'jquery_cookie', 'bootstrap'], function(
     helpers.logoutListener();
   });
 
-  loadBrowsers();
+  loadBrowsers('2015-02-01', '2015-02-20');
 })
