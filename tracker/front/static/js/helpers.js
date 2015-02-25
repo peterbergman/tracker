@@ -75,6 +75,9 @@ define(['jquery', 'chartjs', 'constants', 'jquery_cookie'], function($, Chart, c
       });
     },
     createLineChart: function(chartLabel, labelsArray, dataArray) {
+      if (typeof constants.chart != 'undefined') {
+        constants.chart.destroy();
+      }
       var data = {
         labels: labelsArray,
         datasets: [{
@@ -88,14 +91,17 @@ define(['jquery', 'chartjs', 'constants', 'jquery_cookie'], function($, Chart, c
           data: dataArray
         }]
       };
-      new Chart(helpers.getChartCtx()).Line(data, {});
+      constants.chart = new Chart(helpers.getChartCtx()).Line(data, {});
     },
     createPieChart: function(charLabel, dataArray) {
-      var chart = new Chart(helpers.getChartCtx()).Pie(dataArray, {
+      if (typeof constants.chart != 'undefined') {
+        constants.chart.destroy();
+      }
+      constants.chart = new Chart(helpers.getChartCtx()).Pie(dataArray, {
         showTooltips: false,
         legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li style=\"list-style: square; font-size: 16px; color: <%=segments[i].fillColor%>; content: *; font-size: 1.7em; margin-left: -19px; padding-right: 0.25em; position: relative;\"><%if(segments[i].label){%><span style=\"color: #333; font-size: 9px\"><%=segments[i].label%></span><%}%></li><%}%></ul>"
       });
-      var legend = chart.generateLegend();
+      var legend = constants.chart.generateLegend();
       $('#chart-legend').html(legend);
     },
     setLoggedInData: function() {
