@@ -1,4 +1,4 @@
-# webprog
+# tracker
 
 My own version of a web analytics platform, developed during a course in backend web programming.
 
