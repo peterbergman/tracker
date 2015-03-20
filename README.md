@@ -1,6 +1,6 @@
 # tracker
 
-My own version of a web analytics platform, developed during a course in backend web programming.
+A web analytics platform that I developed during a course in backend web programming.
 
 Demo version running at: http://ec2-54-172-75-176.compute-1.amazonaws.com/
 
